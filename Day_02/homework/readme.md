@@ -325,7 +325,7 @@ An express app that meets all the user stories outlined in the beginning of this
 
 ## Submission Guidelines
 
-- Submit your homework via github issues before the next class starts at 10AM and please don't forget to fill out the form!
+- Submit your homework via the homework submission form pinned to the classroom channel
 
 ## Etc.
 
