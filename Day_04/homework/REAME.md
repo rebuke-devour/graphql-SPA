@@ -30,12 +30,12 @@ There are a few requirements to keep in mind:
 
 Your app should:
 
-	- display a bunch of Pokémon images on the index
-	- have separate show pages for each Pokémon, accessible by clicking on a Pokémon's image on the index page
-	- have the ability to add a new Pokémon
-	- have the ability to edit existing Pokémon
-	- have the ability to delete Pokémon
-	- have some styling
+    - display a bunch of Pokémon images on the index
+    - have separate show pages for each Pokémon, accessible by clicking on a Pokémon's image on the index page
+    - have the ability to add a new Pokémon
+    - have the ability to edit existing Pokémon
+    - have the ability to delete Pokémon
+    - have some styling
 
 ### Setting up
 
@@ -71,17 +71,18 @@ Your app should use RESTful routes:
 const express    = require('express');
 const app        = express();
 
-const Pokemon    = require('../models/pokemon.js');
+const Pokemon = require('../models/pokemon.js');
 
 // INDEX
 app.get('/', (req, res) => {
-	res.render('index.ejs', { data: Pokemon });
+res.render('index.liquid', { data: Pokemon });
 });
 
 // SHOW
 app.get('/:id', (req, res) => {
-    res.render('show.ejs', { data: Pokemon[req.params.id] });
+res.render('show.liquid', { data: Pokemon[req.params.id] });
 });
+
 </pre>
 </details>
 
@@ -103,6 +104,7 @@ Here are suggestions for what to display on your Pokémon's show page:
 Try and make your app look and act nicely with static assets (set up a public folder and add some css, js)-- consider using some jQuery!
 
 ### Need some style inspiration?
+
 These are screenshots from what other students have done to their Pokedex:
 
 <details>
@@ -111,6 +113,7 @@ These are screenshots from what other students have done to their Pokedex:
 ![](https://imgur.com/MZ361IP.png)
 
 ![](https://imgur.com/65HTgw1.png)
+
 </details>
 
 <details>
@@ -119,6 +122,7 @@ These are screenshots from what other students have done to their Pokedex:
 ![](https://imgur.com/XsaaJ2x.png)
 
 ![](https://imgur.com/zppz3ev.png)
+
 </details>
 
 <details>
@@ -127,6 +131,7 @@ These are screenshots from what other students have done to their Pokedex:
 ![](https://imgur.com/ZRFfwgR.png)
 
 ![](https://imgur.com/gEOi0KX.png)
+
 </details>
 
 ## Commits
@@ -139,7 +144,6 @@ The order of your commits this time does not matter, but refer back to the MVP t
 ** Commit your work.** <br>
 "Server is working and displays a plain index page"
 <hr>
-
 
 <hr>
 ** Commit your work.** <br>
@@ -190,7 +194,6 @@ The order of your commits this time does not matter, but refer back to the MVP t
 ## Technical Requirements
 
 - Your app MUST run without syntax errors. If there are errors you can't solve, comment them out and leave a comment above explaining what is wrong
-
 
 ## Submission Guidelines
 

@@ -215,7 +215,7 @@ app.listen(3000, () => {
 
 Now we want to move our View code (HTML) into a separate file just like we did with the data
 
-1. Install the NPM package Liquid (Embedded JavaScript)
+1. Install the NPM package Liquid (Templating Language Created by Shopify)
     - this is a templating library that allows us to mix data into our html
     - the HTML will change based on the data!
     - `npm install liquid liquid-express`
