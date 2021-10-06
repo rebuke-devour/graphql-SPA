@@ -21,7 +21,6 @@ Make a pub app that displays data inside server-side rendered views.
 
 ## The App (User Stories)
 
-
 - When a user goes to the `/drinks` route, they should see an `index` of all the drinks available at the pub
   - **Index**: The name of each drink should be rendered to the page, each name should be clickable
 - When a user clicks on the name of one of the drinks, they should be taken to that drink's `show` page
@@ -33,27 +32,27 @@ Make a pub app that displays data inside server-side rendered views.
 
 **In terminal, inside your homework folder**:
 
-  - `mkdir gitpub`
-  - `cd gitpub`
-  - `mkdir views`
-  - `touch views/index.liquid views/show.liquid`
-  - `mkdir models`
-  - `touch models/drinks.js`
-  - `touch server.js`
-  - `npm init`
-    - follow the `npm init` prompts
-    - _thought question:_ does npm init create a file? if it does, where does it create it and what is the name of the file?
-  - `atom .`
+- `mkdir gitpub`
+- `cd gitpub`
+- `mkdir views`
+- `touch views/index.liquid views/show.liquid`
+- `mkdir models`
+- `touch models/drinks.js`
+- `touch server.js`
+- `npm init`
+  - follow the `npm init` prompts
+  - _thought question:_ does npm init create a file? if it does, where does it create it and what is the name of the file?
+- `code .`
 
 **Make sure you did it right**:
 
 <details><summary>Approximate File Structure</summary><p>
 
-  ![](https://imgur.com/9YUYTpl.png)
+![](https://imgur.com/9YUYTpl.png)
 
-  **Note**:This image is a rough outline for you to double check which main folders should be nested or on the same level.
+**Note**:This image is a rough outline for you to double check which main folders should be nested or on the same level.
 
-  If you just have one file, it could be argued that you don't need a folder for it. But as your apps grow, you'll need to get more organized and definitely use folders. Be consistent and adjust your routing as needed.
+If you just have one file, it could be argued that you don't need a folder for it. But as your apps grow, you'll need to get more organized and definitely use folders. Be consistent and adjust your routing as needed.
 
 </p></details>
 <br/>
@@ -63,9 +62,9 @@ Make a pub app that displays data inside server-side rendered views.
 Remember, make sure you're in the same directory for the app you want to install the packages for!
 
 - `npm i express liquid liquid-express`
-- <details><summary>check your package.json in atom to make sure they installed</summary><p>
+- <details><summary>check your package.json in VSCode to make sure they installed</summary><p>
 
-    ![](https://i.imgur.com/Kcz3uq5.png)
+  ![](https://i.imgur.com/Kcz3uq5.png)
 
   </p></details>
 
@@ -108,46 +107,46 @@ When setting up, you created a file called `drinks.js` in your `models` folder. 
 ```js
 const drinks = [
   {
-    name: 'cruddy mary',
+    name: "cruddy mary",
     price: 132,
-    image: 'https://imgur.com/Va5iIw5'
+    image: "https://imgur.com/Va5iIw5",
   },
   {
-    name: 'index on the beach',
+    name: "index on the beach",
     price: 68,
-    image: 'https://imgur.com/XV2aPa2'
+    image: "https://imgur.com/XV2aPa2",
   },
   {
-    name: 'hack & coke',
+    name: "hack & coke",
     price: 1,
-    image: 'https://imgur.com/rLOXFRI'
+    image: "https://imgur.com/rLOXFRI",
   },
   {
-    name: 'whiskey-value pair',
+    name: "whiskey-value pair",
     price: 11,
-    image: 'https://imgur.com/a7rmkoS'
+    image: "https://imgur.com/a7rmkoS",
   },
   {
-    name: '404 horsemen',
+    name: "404 horsemen",
     price: 202,
-    image: 'https://imgur.com/FLucOLr'
+    image: "https://imgur.com/FLucOLr",
   },
   {
-    name: 'if stateMint julep',
+    name: "if stateMint julep",
     price: 2,
-    image: 'https://imgur.com/yaoK0Dg'
+    image: "https://imgur.com/yaoK0Dg",
   },
   {
-    name: 'APIPA',
+    name: "APIPA",
     price: 43,
-    image: 'https://imgur.com/qAhA7pi'
+    image: "https://imgur.com/qAhA7pi",
   },
   {
-    name: 'node to joy',
+    name: "node to joy",
     price: 56,
-    image: 'https://imgur.com/MbVdwZz'
-  }
-]
+    image: "https://imgur.com/MbVdwZz",
+  },
+];
 ```
 
 - Set up your 'database' so that it can be exported to your `server.js` and then be required by your `server.js`
@@ -170,6 +169,7 @@ const drinks = [
   - See more info [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style)
   - Wondering how you can connect a separate `.css` file? We'll learn about it later, or you can look at the Hungry for More section that will point you in the right direction to research!
 - Add a `background-color` and text `color` to to `body` so that you can ensure your css is working correctly
+
   - <details><summary>For example:</summary><p>
 
     ```
@@ -182,6 +182,7 @@ const drinks = [
     ```
 
   </p></details>
+
 - Change your `/drinks` route to `res.render` your `index.liquid`
 - In your browser, go to `localhost:3000/drinks` to make sure you're rendering the `index.liquid` file!
 
@@ -191,9 +192,9 @@ const drinks = [
 
 ### Setting up your index view to show your drinks data
 
-**In your `index.liquid`, make it so that you can see:***
+**In your `index.liquid`, make it so that you can see:\***
 
-- The name of each drink  as a list item inside an unordered list
+- The name of each drink as a list item inside an unordered list
 - This list should be dynamically rendered by liquid based on your data from your 'database'
 - You'll notice the drink names aren't properly capitalized! Let's fix that! Manipulate the data programatically to capitalize the first letter of their names
 
@@ -267,41 +268,41 @@ Our gitPub is missing some food, so let's add some!
 ```js
 const food = [
   {
-    name: '(req, rEscargot)',
+    name: "(req, rEscargot)",
     price: 12,
-    image: 'https://imgur.com/BRgv2rz'
+    image: "https://imgur.com/BRgv2rz",
   },
   {
-    name: 'Nulltimate Nachos',
+    name: "Nulltimate Nachos",
     price: 10,
-    image: 'https://imgur.com/vKRbSHN'
+    image: "https://imgur.com/vKRbSHN",
   },
   {
-    name: 'split() pea soup',
+    name: "split() pea soup",
     price: 1,
-    image: 'https://imgur.com/qd9jheG'
+    image: "https://imgur.com/qd9jheG",
   },
   {
-    name: 'CURLy Fries',
+    name: "CURLy Fries",
     price: 11,
-    image: 'https://imgur.com/lEQ1AdY'
+    image: "https://imgur.com/lEQ1AdY",
   },
   {
-    name: 'Garlic NaN',
+    name: "Garlic NaN",
     price: 202,
-    image: 'https://imgur.com/UEx7cYk'
+    image: "https://imgur.com/UEx7cYk",
   },
   {
-    name: 'Baby Got BackEnd Ribs',
+    name: "Baby Got BackEnd Ribs",
     price: 2,
-    image: 'https://imgur.com/XbRMQ3g'
+    image: "https://imgur.com/XbRMQ3g",
   },
   {
-    name: 'Git Pull Pork Sandwich',
+    name: "Git Pull Pork Sandwich",
     price: 43,
-    image: 'https://imgur.com/QZW3gJg'
-  }
-]
+    image: "https://imgur.com/QZW3gJg",
+  },
+];
 ```
 
 1. List the food under your drinks list on the index
@@ -321,6 +322,7 @@ const food = [
 An express app that meets all the user stories outlined in the beginning of this markdown.
 
 ## Technical Requirements
+
 1. Your app MUST run without syntax errors. If there are errors you can't solve, comment them out and leave a comment above explaining what is wrong
 
 ## Submission Guidelines
@@ -333,4 +335,4 @@ An express app that meets all the user stories outlined in the beginning of this
 
 ---
 
-*Copyright 2020, General Assembly Space. Licensed under [CC-BY-NC-SA, 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)*
+_Copyright 2020, General Assembly Space. Licensed under [CC-BY-NC-SA, 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)_

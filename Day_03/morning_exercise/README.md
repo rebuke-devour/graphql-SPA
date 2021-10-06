@@ -1,6 +1,7 @@
 ![](/ga_cog.png)
 
 ---
+
 Title: Forms<br>
 Type: Morning Exercise<br>
 Creator: Jerrica Bobadilla <br>
@@ -8,54 +9,56 @@ Competencies: CSS, HTML
 
 ---
 
-# HTML/CSS Forms 
+# HTML/CSS Forms
 
-When making CRUD apps, you'll be using plenty of forms but they can be a bit tricky to style. So let's get some practice and see what kind of styling you can do with them by coding along with me. 
+When making CRUD apps, you'll be using plenty of forms but they can be a bit tricky to style. So let's get some practice and see what kind of styling you can do with them by coding along with me.
 
-## ACTIVITY 
+## ACTIVITY
 
 ![](https://i.imgur.com/HWMBASw.png)
 
-Perhaps one of the most common uses for forms out there, today we'll be building out a registration form to look like the mockup above. 
+Perhaps one of the most common uses for forms out there, today we'll be building out a registration form to look like the mockup above.
 
-### Setup 
+### Setup
 
-Starter code has been provided for you with all necessary files linked together. 
+Starter code has been provided for you with all necessary files linked together.
 
 1. `git pull upstream master`
 1. Navigate to the `morning_exercise/registration-form` folder for today.
-1. Open the entire folder in atom to follow along.
+1. Open the entire folder in VSCode to follow along.
 1. Open the `index.html` in your browser.
 
-Follow along while I style it live. Additionally, anytime you see a :sparkles:emoji in the notes below, that indicates a styling block for the activity! 
+Follow along while I style it live. Additionally, anytime you see a :sparkles:emoji in the notes below, that indicates a styling block for the activity!
 
-## FIELDSET, LEGENDS, AND LABELS 
+## FIELDSET, LEGENDS, AND LABELS
 
-The `<fieldset>`, `<legend>` and `<label>` tags are designed for web accessibility and aiding screen readers to properly interpret the form. 
-  
-  - *Fieldsets* let you group parts of a form together.
-  - *Legend* defines what a fieldset is for. 
-  - *Labels* define what a specific input is looking for. 
-  
-#### More on Labels 
+The `<fieldset>`, `<legend>` and `<label>` tags are designed for web accessibility and aiding screen readers to properly interpret the form.
+
+- _Fieldsets_ let you group parts of a form together.
+- _Legend_ defines what a fieldset is for.
+- _Labels_ define what a specific input is looking for.
+
+#### More on Labels
 
 You can either _nest_ your input inside a label or you can _put the label first and then as a sibling put the corresponding input_, if you do it the second way the `<label>` must have a `for` attribute in the label tag and then the `<input>` must have an `id` attribute with a value that matches the value of the label's `for` attribute.
 
-  - NESTED EXAMPLE: 
-    ```
-    <label>
-      Username
-      <input type="text"/>
-    </label>
-    ```
-  - SIBLING EXAMPLE: Note the matching `for="username"` & `id="username"` attributes to 'connect' the label to the input
-    ```
-    <label for="username">USERNAME</label>
-    <input type="text" id="username"/>
-    ```
+- NESTED EXAMPLE:
+  ```
+  <label>
+    Username
+    <input type="text"/>
+  </label>
+  ```
+- SIBLING EXAMPLE: Note the matching `for="username"` & `id="username"` attributes to 'connect' the label to the input
+  ```
+  <label for="username">USERNAME</label>
+  <input type="text" id="username"/>
+  ```
+
 #### :sparkles:Let's Style Our Fieldsets, Legends, and Labels!
 
 **In our HTML:** Update all our inputs, textareas, and labels so that they have matching variables
+
 ```
 <!-- username -->
 <label for="username">USERNAME</label>
@@ -75,6 +78,7 @@ You can either _nest_ your input inside a label or you can _put the label first 
 ```
 
 **In our CSS:**
+
 ```
 fieldset {
   border: 1px solid #ccc;
@@ -97,51 +101,52 @@ label {
 
 ## INPUT TYPES, STYLING INPUTS, AND PSEUDO CLASSES
 
-There are a lot of different input types (see the resources below), but for today let's just focus on some of the most common ones: 
+There are a lot of different input types (see the resources below), but for today let's just focus on some of the most common ones:
 
-  - _text_ is just the default input type text box that you've all grown used to so far, it accepts any string.
-  - _password_ makes it so that whatever the user types into the input field is hidden like a password should be!
-  - _email_ makes it so that the form will automatically validate if the user actually entered an email upon submission.
-  - _submit_ makes the input a button and indicates that when the user clicks this button, the form should be submitted.
-    - Note: The default text inside a submit button is "submit", if you want it to say something different, add an attribute of `value="whatever you want the button to say"`
-  
-#### Styling Inputs 
+- _text_ is just the default input type text box that you've all grown used to so far, it accepts any string.
+- _password_ makes it so that whatever the user types into the input field is hidden like a password should be!
+- _email_ makes it so that the form will automatically validate if the user actually entered an email upon submission.
+- _submit_ makes the input a button and indicates that when the user clicks this button, the form should be submitted.
+  - Note: The default text inside a submit button is "submit", if you want it to say something different, add an attribute of `value="whatever you want the button to say"`
 
-There are a few ways to style inputs. 
+#### Styling Inputs
 
-  - The simplest way is to just select `input`:
-    ```
-    input {
-      /* styles in here */
-    }
-    ```
-  - Since there are several types of inputs, we don't always want to style them all the same way using `input`. Instead, you can _select_ specific attributes using the following notation: `input[attribute="value"]`
-    ```
-    input[type="submit"] { 
-      /* styles in here */
-    }
-    ```
+There are a few ways to style inputs.
 
-#### Pseudo Classes 
+- The simplest way is to just select `input`:
+  ```
+  input {
+    /* styles in here */
+  }
+  ```
+- Since there are several types of inputs, we don't always want to style them all the same way using `input`. Instead, you can _select_ specific attributes using the following notation: `input[attribute="value"]`
+  ```
+  input[type="submit"] {
+    /* styles in here */
+  }
+  ```
 
-Pseudo classes are keywords tacked onto an element that specifies a special state of the element. They are not exclusive to forms (they can be used on almost any HTML element you want!), but they're very useful when trying to style forms. Let's take a look at two of the more common ones. 
+#### Pseudo Classes
 
-  - _:hover_ adds style onto whatever element you tack it onto when the user hovers over it 
-    ```
-    input[type="submit"]:hover {
-      /* styles entered here will be applied to the submit button only when the user hovers over it */
-    }
-    ```
-  - _:focus_ adds style onto whatever element you tack it onto whenever the user "focuses" on the element (typically when the user clicks on the element or selects it using tab)
-    ```
-    input[type="text"]:focus {
-      /* styles entered here will be applied to the text input form only when the user is focused on it */
-    }
-    ```
-    
-#### :sparkles:Let's Style Our Input Boxes! 
+Pseudo classes are keywords tacked onto an element that specifies a special state of the element. They are not exclusive to forms (they can be used on almost any HTML element you want!), but they're very useful when trying to style forms. Let's take a look at two of the more common ones.
+
+- _:hover_ adds style onto whatever element you tack it onto when the user hovers over it
+  ```
+  input[type="submit"]:hover {
+    /* styles entered here will be applied to the submit button only when the user hovers over it */
+  }
+  ```
+- _:focus_ adds style onto whatever element you tack it onto whenever the user "focuses" on the element (typically when the user clicks on the element or selects it using tab)
+  ```
+  input[type="text"]:focus {
+    /* styles entered here will be applied to the text input form only when the user is focused on it */
+  }
+  ```
+
+#### :sparkles:Let's Style Our Input Boxes!
 
 **In our HTML:** Update the input type of our password and email fields
+
 ```
 <input type="password" id="password">
 
@@ -149,6 +154,7 @@ Pseudo classes are keywords tacked onto an element that specifies a special stat
 ```
 
 **In our CSS:**
+
 ```
 input {
   width: 100%;
@@ -166,14 +172,16 @@ input:focus {
 
 _NOTE:_ Want to keep the outline blur effect? You can just change the color of the outline instead of getting rid of it by using the `outline-color` property! See more on outline [here](https://css-tricks.com/almanac/properties/o/outline/)
 
-#### :sparkles:Let's Style Our Submit Button! 
+#### :sparkles:Let's Style Our Submit Button!
 
 **In our HTML:** Update the submit button so that it has a value of REGISTER
+
 ```
 <input type="submit" value="REGISTER">
 ```
 
 **In our CSS:**
+
 ```
 input[type="submit"] {
   width: 100%;
@@ -193,77 +201,80 @@ input[type="submit"]:hover {
 }
 ```
 
-## TEXTAREA 
+## TEXTAREA
 
-Textarea is essentially just another type of input box, but is not an actual input element. Rather, it's its own element `<textarea>` and requires a closing tag `</textarea>` that inputs do not. Textareas are meant for larger bodies of text that shouldn't go in regular text inputs, for example: profile information, a review, etc. 
+Textarea is essentially just another type of input box, but is not an actual input element. Rather, it's its own element `<textarea>` and requires a closing tag `</textarea>` that inputs do not. Textareas are meant for larger bodies of text that shouldn't go in regular text inputs, for example: profile information, a review, etc.
 
-#### Styling Textareas 
+#### Styling Textareas
 
-  - Textareas are relatively difficult to style because, typically, they can be resized by the user which may mess with the styling of your page. One way to mitigate that is by using the `resize` property
-    - `resize: none` makes it so that the user cannot resize the textarea at all 
-    - `resize: vertical` makes it so that the user can only resize it vertically 
-    - `resize: horizontal` makes it so that the user can only resize it horizontally
-    - If you don't set any of these, textareas are defaulted to resize both vertically and horizontally
-  - Alternatively, you can set a `max-height` or `max-width` so that the user cannot resize beyond a certain width
-    - Note, you may have to set a default height and width to get it to the size you originally want the textarea to be at when they first load the page
-  - Examples:
-     ```  
-     /* using resize none to make sure the textarea always stays a specific width/height */
-     textarea {
-      width: 200px;
-      height: 100px;
-      resize: none;
-     }
-     
-     /* using max-heights and max-widths to make it so that the user can only resize up to that point */
-     textarea {
-      width: 200px;
-      height: 100px;
-      max-width: 400px;
-      max-height: 150px;
-     }
-     ```
- 
- #### :sparkles: Let's Style Our Textarea!
- 
- **In our CSS**: We want our textarea to look identical to our `input` elements from earlier, so let's just tack on `textarea` to those styles instead of repeating ourselves! Then, specific to just our textarea, we don't want it to resize and we want a specific height:
- ```
- textarea {
-  resize: none;
-  height: 75px;
- }
- ```
+- Textareas are relatively difficult to style because, typically, they can be resized by the user which may mess with the styling of your page. One way to mitigate that is by using the `resize` property
+  - `resize: none` makes it so that the user cannot resize the textarea at all
+  - `resize: vertical` makes it so that the user can only resize it vertically
+  - `resize: horizontal` makes it so that the user can only resize it horizontally
+  - If you don't set any of these, textareas are defaulted to resize both vertically and horizontally
+- Alternatively, you can set a `max-height` or `max-width` so that the user cannot resize beyond a certain width
+  - Note, you may have to set a default height and width to get it to the size you originally want the textarea to be at when they first load the page
+- Examples:
+  ```
+  /* using resize none to make sure the textarea always stays a specific width/height */
+  textarea {
+   width: 200px;
+   height: 100px;
+   resize: none;
+  }
 
-## VALUE VS. PLACEHOLDER 
+  /* using max-heights and max-widths to make it so that the user can only resize up to that point */
+  textarea {
+   width: 200px;
+   height: 100px;
+   max-width: 400px;
+   max-height: 150px;
+  }
+  ```
 
-`value` and `placeholder` are both attributes that you can add on to `input` and, to an extent, `textarea` elements. They're similar in that they place text into the forms, but different in how they do so. Let's see how: 
+#### :sparkles: Let's Style Our Textarea!
 
-  - _value_ pre-fills out an input form with text that the user can actually manipulate or keep as is. 
-  - _placeholder_ is grayed out on the input form with text that typically should guide the user as to what type of info they should put inside of the input form. The user _cannot_ manipulate this text, in fact once they start typing into the input form, the placeholder should disappear completely.
-  
-#### Textarea "values" 
+**In our CSS**: We want our textarea to look identical to our `input` elements from earlier, so let's just tack on `textarea` to those styles instead of repeating ourselves! Then, specific to just our textarea, we don't want it to resize and we want a specific height:
 
-  - `<textarea>` elements, unlike inputs, do _not_ recognize the `value` attribute. If you want to pre-fill a textarea with text for the user to manipulate, you have to put the value between the `<textarea></textarea>` tags
-  - EXAMPLE: 
-    ```
-     /* input with pre-filled value */
-     <input type="text" value="hello world!">
+```
+textarea {
+ resize: none;
+ height: 75px;
+}
+```
 
-     /* textarea with pre-filled value */
-     <textarea>hello world!</textarea>
-    ```
+## VALUE VS. PLACEHOLDER
+
+`value` and `placeholder` are both attributes that you can add on to `input` and, to an extent, `textarea` elements. They're similar in that they place text into the forms, but different in how they do so. Let's see how:
+
+- _value_ pre-fills out an input form with text that the user can actually manipulate or keep as is.
+- _placeholder_ is grayed out on the input form with text that typically should guide the user as to what type of info they should put inside of the input form. The user _cannot_ manipulate this text, in fact once they start typing into the input form, the placeholder should disappear completely.
+
+#### Textarea "values"
+
+- `<textarea>` elements, unlike inputs, do _not_ recognize the `value` attribute. If you want to pre-fill a textarea with text for the user to manipulate, you have to put the value between the `<textarea></textarea>` tags
+- EXAMPLE:
+
+  ```
+   /* input with pre-filled value */
+   <input type="text" value="hello world!">
+
+   /* textarea with pre-filled value */
+   <textarea>hello world!</textarea>
+  ```
+
 #### :sparkles: Let's Add a Placeholder to our Textarea!
 
 **In our HTML:** Update it so that it has a placeholder with a value of whatever you want it to say.
+
 ```
 <textarea id="biography" placeholder="Say something about yourself (e.g. Hi, my name is Connor. I'm the android sent by CyberLife)"></textarea>
 ```
-    
 
 ## RESOURCES
 
-There's an overwhelming amount of form types and attributes that you can use, and we barely scratched the surface today. Text, textarea, password, and submit are the most common that you'll probably use in your apps, but if you'd like to see what else HTML forms have to offer, take a look at the resources below: 
+There's an overwhelming amount of form types and attributes that you can use, and we barely scratched the surface today. Text, textarea, password, and submit are the most common that you'll probably use in your apps, but if you'd like to see what else HTML forms have to offer, take a look at the resources below:
 
-  - [Our student wiki page with a quick cheatsheet](../../../../../wiki/Student-Handbook)
-  - [W3Schools HTML Forms](https://www.w3schools.com/html/html_forms.asp)
-  - [MDN's entry on HTML Forms](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms)
+- [Our student wiki page with a quick cheatsheet](../../../../../wiki/Student-Handbook)
+- [W3Schools HTML Forms](https://www.w3schools.com/html/html_forms.asp)
+- [MDN's entry on HTML Forms](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms)
