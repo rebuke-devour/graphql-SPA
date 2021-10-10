@@ -1,153 +1,172 @@
-# Intergalactic Bounty Hunter Database
+# Mongoose Vampires
 
-![](https://snworksceo.imgix.net/car/614a86c8-405f-4fd8-b60d-93998c769661.sized-1000x1000.jpg)
+For this lab, you will be using some of the mongoose commands that you learned today and you will be **reading the documents** to find **new** queries to complete the following activities. Researching queries and implementing them is a big part of this lab!
 
-You've been going to meetup events and networking. You've been telling everyone you're so excited to get a dev job that you'll take _any job_.
+![mongoose](https://s-media-cache-ak0.pinimg.com/564x/ee/b7/a9/eeb7a99383582d53e65ffcc0e4a225bd.jpg)
 
-You run into a shadowy stranger, who asks you three times 'Really? Any job?' and you continue to agree enthusiastically. Things go dark, and you wake up in a strange place.
+# Resources
+Utilize the following resources to research the commands you will need:
+- Your notes from today
+- Mongoose Documentation
+- Google to find Stack Overflow articles and more
 
-The shadowy stranger greets you and says 'Welcome to your new job! You are now our dev who will be building an intergalactic bounty hunter database for us!'
+# Setup
+1. Start your mongo server with `mongod` in terminal
+1. navigate to this directory in terminal and `npm i` to install `mongoose`
+1. open the project in atom, you'll be working with some starter code in the `models` folder and the `app.js` file
 
-You look around, notice some high end coffee and tea machines, an air hockey table, nap rooms and floor to ceiling windows with a view of outer space. The shadowy stranger takes you to your desk which has a fancy sit-to stand adjustable hight desk with a swing bar, two big monitors, and Herman Miller chair. You say to yourself 'Not bad! Not bad at all!'
 
----
+# The Exercise
 
-## Set up
+## Building a Schema
 
-Start `Mongo`, by typing `mongod`, if you don't already have it running.
+Lets design a schema using mongoose and then use it to create some documents and eventually query for those documents.
 
-Open a new tab and start a Mongo shell if you don't have it running by typing `mongo`
 
-connect to a new sub-database by typing
-```
-use hunters
-```
-If this database does not exist, it will be created
+Our vampire collection will look something like this:
 
-Let's create a collection for all the beings that have bounties.
-
-```js
-db.createCollection('bounties')
-```
-
-We should get an `ok` message.
-
-## Create/Insert
-
-Let's add our first bounty
-
-```js
-
-db.bounties.insert(
-  {
-    name: 'Han Solo',
-    wantedFor : 'Owing money',
-    client : 'Jabba the Hut',
-    reward : 1000000,
-    ship: 'Millennium Falcon',
-    hunters :['Bobba Fett', 'Dengar', 'IG-88', 'Zuckuss', 'Greedo', 'Bossk', '4-LOM'],
-    captured: false
-  }
-  )
+``` javascript
+var vampire = {
+  name: 'Chocula',
+  title: 'Count'
+  hair_color: 'brown',
+  eye_color: 'brown',
+  dob: new Date(1971, 2, 13, 7, 47),
+  loves: ['cereal','marshmallows'],
+  location: 'Minneapolis, Minnesota, US',
+  gender: 'm',
+  victims: 2,
+}
 ```
 
-You should get an ok message that looks similar to this:
+1. Build a vampire **schema** and **model** that matches the object above inside the `models/vampires.js` file
 
-![Insert ok](https://i.imgur.com/KdFh4Ss.png)
+1. Go to the Mongoose documentation to learn more about validations and defaults: http://mongoosejs.com/docs/api.html
 
-Using the above template, make another bounty
+1. The **name field is required**, so make sure that the schema accommodates for that.
 
-Now insert a few more bounties
+1. Also, **no vampire will have less than 0 victims**, so add that into the schema as a validation.
 
-```js
+1. Lastly, set the **default value of the hair color to blonde**.
 
-db.bounties.insert([
-  {
-    name: 'Han Solo',
-    wantedFor : 'Owing money',
-    client : 'Jabba the Hut',
-    reward : 1000000,
-    ship: 'Millennium Falcon',
-    hunters :['Bobba Fett', 'Dengar', 'IG-88', 'Zuckuss', 'Greedo', 'Bossk', '4-LOM'],
-    captured: false
-  },
-  {
-    name: 'Rocket',
-    wantedFor : 'Stealing Batteries',
-    client : 'Ayesha High Priestess of the Sovereign',
-    reward : 1000000000,
-    ship: 'The Milano',
-    hunters :['Nebula', 'Ravagers'],
-    captured: false
-  },
-  {
-    name: 'Sara Lance',
-    wantedFor : 'Screwing up the timeline, causing anachronisms',
-    client : 'Time Bureau',
-    reward : 50000,
-    ship: 'Waverider',
-    hunters :['Chronos'],
-    captured: false
-  },
-  {
-    name: 'Malcolm Reynolds',
-    wantedFor : 'Aiming to misbehave',
-    client : 'The Alliance',
-    reward : 40000,
-    ship: 'Serenity',
-    hunters :['Jubal Early'],
-    captured: false
-  },
-  {
-    name: 'Starbuck',
-    wantedFor : "Disobeying Captain's orders",
-    client : 'Captain Adama',
-    ship: 'Demetrius',
-    reward : 1000,
-    hunters :['Apollo'],
-    captured: true
-  }
-])
+
+
+## Inserting Seed Data Using Mongoose
+
+Insert into the database using **create** method:
+
+### Add the vampire data that we gave you
+
+1. We have required `seed_vampires.js` for you in the  `app.js` file. This is an array of Vampires for you to insert into your database.
+
+1. Write this command and run it **ONCE** in `app.js` - once you are done, comment it out or else every time you run it it will make duplicates of your data.
+
+```javascript
+Vampire.insertMany(seedData,(err, vampires) => {
+  if (err){ console.log(err)}
+    console.log("added provided vampire data", vampires)
+    mongoose.connection.close();
+  });
 ```
+1. remember run  your file with `node app.js`
 
-## Read/Query
+### Add some new vampire data
 
-- Do a query to see all the bounties
-- Do a query to find the bounty whose client is `Time Bureau`
-- Do a query to find the bounties who have been `captured`
-- Do a query specific to the bounty you inserted
-- Do a query to just return the names of all the bounties
+1. Using the create method, create 4 new vampires with any qualities that you like two should be male and two should be female.
+
+
+## Querying
+### Select by comparison
+
+Write a different query for each of the following:
+
+1. Find all the vampires that that are females
+2. have greater than 500 victims
+3. have fewer than or equal to 150 victims
+4. have a victim count is not equal to 210234
+5. have greater than 150 AND fewer than 500 victims
+
+
+### Select by exists or does not exist
+Select all the vampires that:
+
+1. have a key of 'title'
+2. do not have a key of 'victims'
+3. have a title AND no victims
+4. have victims AND the victims they have are greater than 1000
+
+
+### Select with OR
+Select all the vampires that:
+
+1. are from New York, New York, US or New Orleans, Louisiana, US
+2. love brooding or being tragic
+3. have more than 1000 victims or love marshmallows
+4. have red hair or green eyes
+
+
+### Select objects that match one of several values
+Select all the vampires that:
+
+1. love either frilly shirtsleeves or frilly collars
+2. love brooding
+3. love at least one of the following: appearing innocent, trickery, lurking in rotting mansions, R&B music
+4. love fancy cloaks but not if they also love either top hats or virgin blood * Hint-You will also have to use $nin *
+
+
+### Negative Selection
+Select all vampires that:
+
+1. love ribbons but do not have brown eyes
+2. are not from Rome
+3. do not love any of the following: [fancy cloaks, frilly shirtsleeves, appearing innocent, being tragic, brooding]
+5. have not killed more than 200 people
+
+
+## Replace
+
+1. replace the vampire called 'Claudia' with a vampire called 'Eve'. 'Eve' will have a key called 'portrayed_by' with the value 'Tilda Swinton'
+2. replace the first male vampire with another whose name is 'Guy Man', and who has a key 'is_actually' with the value 'were-lizard'
+
+
+## Update
+
+1. Update 'Guy Man' to have a gender of 'f'
+2. Update 'Eve' to have a gender of 'm'
+3. Update 'Guy Man' to have an array called 'hates' that includes 'clothes' and 'jobs'
+4. Update 'Guy Man's' hates array also to include 'alarm clocks' and 'jackalopes'
+5. Rename 'Eve's' name field to 'moniker'
+6. We now no longer want to categorize female gender as "f", but rather as **fems**. Update all females so that the they are of gender "fems".
+
+
 
 ## Remove
 
-- Starbuck and the Captain have come to an understanding. Remove her record
-- find and remove the duplicate record - be sure to JUST remove the one copy
-
-## Update
-Update `Sara Lance`'s name to be her superhero alias 'White Canary'
-
-Update Rocket's ship to be `The Milano 2`
-
----
-
-## Hungry for More - Intermediate Mongo
-
-Find the [INTERMEDIATE_MONGO.md lecture notes](../instructor_notes/Advanced%20Mongo/2.%20INTERMEDIATE_MONGO.md) in the instructor notes directory. Follow through each of the explanations. Follow the commands and perform appropriate finds after each update call to see the results
-
-- Find the bounties that are greater than `100000`
-- Find the bounties that are less than `1000`
-- Find the bounties that are less than or equal to `1000`
-
-- Find the bounty with the hunter `Nebula`
-- Find the bounty with the ship `Waverider` OR `Serenity`
-- Find the bounty who is not captured AND has whose client is `Ayesha High Priestess of the Sovereign`
-- Increase all the bounties by 333333
-- Multiply all the bounties by 2
-- Add `Bobba Fett` as a hunter for `Malcolm Reynolds`
-- Add `Bobba Fett` as a hunter for the one that has the ship `Waverider`
-- Find and remove `Dengar` the bounty hunter
-- Upserts will insert a value if it doesn't exist, if it does it will update it
-- Try giving a new field of `lastSeen` to Han Solo, with the property `yesterday` set upsert to true
-- Try giving all bounties a new field of `lastSeen` - with a value of `last week` and set upsert to `false`
-
+1. Remove a single document wherein the hair_color is 'brown'
+2. We found out that the vampires with the blue eyes were just fakes! Let's remove all the vampires who have blue eyes from our database.
 <hr>
+
+
+## Hungry for more
+
+1. Check out Mongoose's Query Builder!
+
+```js
+Person.
+  find({ occupation: /host/ }).
+  where('name.last').equals('Ghost').
+  where('age').gt(17).lt(66).
+  where('likes').in(['vaporizing', 'talking']).
+  limit(10).
+  sort('-occupation').
+  select('name occupation').
+  exec(callback);
+```
+
+1. Write what that does in English: `Find a person whose occupation is ...`
+
+2. Make an index route that will res.send the json of all the data in our database.
+
+3. If number 1 was easy, try to connect your database to your application and show a proper index page that displays your vampire data. If this is also easy, create a show page as well where you are showing individual vampire data.
+
+4. Have extra time? Try out a few more problems on [CodeWars](https://www.codewars.com/)
