@@ -10,7 +10,7 @@
 
 - create a new npm project `npm init -y`
 
-- install dependencies `npm install express mongoose method-override liquidjs liquid-express dotenv morgan`
+- install dependencies `npm install express mongoose method-override liquid-express-views dotenv morgan`
 
 - install nodemon as a dev dependency `npm install --save-dev nodemon`
 
@@ -203,7 +203,7 @@ const Fruit = model("Fruit", fruitsSchema);
 /////////////////////////////////////////////////
 // Create our Express Application Object
 /////////////////////////////////////////////////
-const app = express();
+const app = require("liquid-express")(express());
 
 /////////////////////////////////////////////////////
 // Middleware
@@ -278,7 +278,6 @@ So here is how the route would look like all three ways:
 #### The .then Method
 
 ```js
-// index route
 // index route
 app.get("/fruits", (req, res) => {
   // find all the fruits
