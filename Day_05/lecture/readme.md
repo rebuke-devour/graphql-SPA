@@ -85,7 +85,7 @@ const Tweet = require("./tweet.js");
 
 ```js
 // Global configuration
-const mongoURI = "mongodb://localhost:27017/" + "tweets";
+const mongoURI = "YOUR MONGODB URL";
 const db = mongoose.connection;
 ```
 
@@ -104,9 +104,7 @@ Warnings are ok, it'll still work, for now. But in later versions it may stop wo
 This should clear up the errors:
 
 ```js
-mongoose.connect(mongoURI, { useNewUrlParser: true }, () => {
-  console.log("the connection with mongod is established");
-});
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 ```
 
 - **OPTIONAL** provide error/success messages about the connections
@@ -115,8 +113,8 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, () => {
 // Connection Error/Success
 // Define callback functions for various events
 db.on("error", (err) => console.log(err.message + " is mongod not running?"));
-db.on("connected", () => console.log("mongo connected: ", mongoURI));
-db.on("disconnected", () => console.log("mongo disconnected"));
+db.on("open", () => console.log("mongo connected: ", mongoURI));
+db.on("close", () => console.log("mongo disconnected"));
 ```
 
 - While the connection is open, we won't have control of our terminal. If we want to regain control, we have to close the connection.
@@ -146,15 +144,13 @@ const mongoURI = "mongodb://localhost:27017/" + "tweets";
 const db = mongoose.connection;
 
 // Connect to Mongo
-mongoose.connect(mongoURI, { useNewUrlParser: true }, () => {
-  console.log("the connection with mongod is established");
-});
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Connection Error/Success - optional but can be helpful
 // Define callback functions for various events
 db.on("error", (err) => console.log(err.message + " is Mongod not running?"));
-db.on("connected", () => console.log("mongo connected: ", mongoURI));
-db.on("disconnected", () => console.log("mongo disconnected"));
+db.on("open", () => console.log("mongo connected: ", mongoURI));
+db.on("close", () => console.log("mongo disconnected"));
 ```
 
 ## Set Up Tweet Schema
@@ -164,6 +160,7 @@ In `tweet.js`
 ```js
 const mongoose = require("mongoose"); // require mongoose
 const Schema = mongoose.Schema; // create a shorthand for the mongoose Schema constructor
+const model = mongoose.model // shorthand for model function
 
 // create a new Schema
 // This will define the shape of the documents in the collection
@@ -184,7 +181,7 @@ const tweetSchema = new Schema(
 // An instance of a model is called a document.
 // Models are responsible for creating and reading documents from the underlying MongoDB Database
 // from here: https://mongoosejs.com/docs/models.html
-const Tweet = mongoose.model("Tweet", tweetSchema);
+const Tweet = model("Tweet", tweetSchema);
 
 //make this exportable to be accessed in `app.js`
 module.exports = Tweet;
@@ -205,18 +202,19 @@ const myFirstTweet = {
 ```
 
 ```js
-Tweet.create(myFirstTweet, (error, tweet) => {
-  if (error) {
-    //if there is an error console log it
-    console.log(error);
-  } else {
-    // else show us the created tweet
-    console.log(tweet);
-  }
-  // get control of terminal back
-  // else just use control c
-  db.close();
-});
+Tweet.create(myFirstTweet)
+// if database transaction succeeds
+.then((tweet) => {
+  console.log(tweet)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 Let's run this with
@@ -286,14 +284,20 @@ const manyTweets = [
 Let's insert all these tweets:
 
 ```js
-Tweet.insertMany(manyTweets, (error, tweets) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(tweets);
-  }
-  db.close();
-});
+Tweet.insertMany(manyTweets)
+// if database transaction succeeds
+.then((tweets) => {
+  console.log(tweets)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
+
 ```
 
 - `node app.js`
@@ -311,37 +315,73 @@ and let's comment it out so we don't insert duplicates
 Let's find all
 
 ```js
-Tweet.find((err, tweets) => {
-  console.log(tweets);
-  db.close();
-});
+Tweet.find({})
+// if database transaction succeeds
+.then((tweets) => {
+  console.log(tweets)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 Let's limit the fields returned, the second argument allows us to pass a string with the fields we are interested in:
 
 ```js
-Tweet.find({}, "title body", (err, tweets) => {
-  console.log(tweets);
-  db.close();
-});
+Tweet.find({}, "title body")
+// if database transaction succeeds
+.then((tweets) => {
+  console.log(tweets)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 Let's look for a specific tweet:
 
 ```js
-Tweet.find({ title: "Water" }, (err, tweet) => {
-  console.log(tweet);
-  db.close();
-});
+Tweet.find({ title: "Water" })
+// if database transaction succeeds
+.then((tweet) => {
+  console.log(tweet)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 We can also use advanced query options. Let's find the tweets that have 20 or more likes
 
 ```js
-Tweet.find({ likes: { $gte: 20 } }, (err, tweets) => {
-  console.log(tweets);
-  db.close();
-});
+Tweet.find({ likes: { $gte: 20 } })
+// if database transaction succeeds
+.then((tweets) => {
+  console.log(tweets)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 ### Delete Documents with Mongoose
@@ -353,14 +393,19 @@ We have two copies of our first tweet and a few options to delete it
 - `.findByIdAndRemove()`- finds by ID - great for delete routes in an express app!
 
 ```js
-Tweet.findOneAndRemove({ title: "Deep Thoughts" }, (err, tweet) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("This is the deleted tweet:", tweet);
-  }
-  db.close();
-});
+Tweet.findOneAndRemove({ title: "Deep Thoughts" })
+// if database transaction succeeds
+.then((tweet) => {
+  console.log(tweet)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 ### Update Documents with Mongoose
@@ -377,16 +422,19 @@ If we want to have our updated document returned to us in the callback, we have 
 Tweet.findOneAndUpdate(
   { title: "Vespa" },
   { sponsored: true },
-  { new: true },
-  (err, tweet) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(tweet);
-    }
-    db.close();
-  }
-);
+  { new: true })
+// if database transaction succeeds
+.then((tweet) => {
+  console.log(tweet)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 We'll see the console.logged tweet will have the value of sponsored updated to true. Without `{new: true}` we would get the original unaltered tweet back.
@@ -396,10 +444,19 @@ We'll see the console.logged tweet will have the value of sponsored updated to t
 We can count how many tweets we have with likes greater than 20
 
 ```js
-Tweet.countDocuments({ likes: { $gte: 20 } }, (err, tweetCount) => {
-  console.log("the number of tweets with more than 19 likes is", tweetCount);
-  db.close();
-});
+Tweet.countDocuments({ likes: { $gte: 20 } })
+// if database transaction succeeds
+.then((count) => {
+  console.log(count)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 We can check out all the things we can do at the [Mongoose API docs](http://mongoosejs.com/docs/api.html)
@@ -414,10 +471,19 @@ Do a search, limit the number of returned queries to 2, sort them by title
 Tweet.find({ likes: { $gte: 20 } }, "title -_id")
   .limit(2)
   .sort("title")
-  .exec((err, tweets) => {
-    console.log(tweets);
-    db.close();
-  });
+  .exec()
+// if database transaction succeeds
+.then((tweets) => {
+  console.log(tweets)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 <hr>
@@ -439,45 +505,101 @@ Tweet.find({ likes: { $gte: 20 } }, "title -_id")
 Mongoose's default find gives you an array of objects.  But what if you know you only want one object?  These convenience methods just give you one object without the usual array surrounding it.
 
 ```javascript
-Article.findById('5757191bce5579b805705900', (err, article)=>{
-	console.log(article);
-});
+Article.findById('5757191bce5579b805705900')
+// if database transaction succeeds
+.then((article) => {
+  console.log(article)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 ```javascript
-Article.findOne({ author : 'Matt' }, (err, article)=>{
-	console.log(article);
-});
+Article.findOne({ author : 'Matt' })
+// if database transaction succeeds
+.then((tweet) => {
+  console.log(tweet)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 ```javascript
 Article.findByIdAndUpdate(
 	'5757191bce5579b805705900', // id of what to update
 	{ $set: { author: 'Matthew' } }, // how to update it
-	{ new : true }, // tells findOneAndUpdate to return modified article, not the original
-	(err, article)=>{
-		console.log(article);
-	});
-});
+	{ new : true })
+// if database transaction succeeds
+.then((article) => {
+  console.log(article)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 ```javascript
 Article.findOneAndUpdate(
 	{ author: 'Matt' }, // search criteria of what to update
 	{ $set: { author: 'Matthew' } }, // how to update it
-	{ new : true }, // tells findOneAndUpdate to return modified article, not the original
-	(err, article)=>{
-		console.log(article);
-	});
-});
+	{ new : true }) // tells findOneAndUpdate to return modified article, not the original
+// if database transaction succeeds
+.then((article) => {
+  console.log(article)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 ```javascript
-Article.findByIdAndRemove('5757191bce5579b805705900', (err, article)=>{
-	console.log(article); // log article that was removed
-});
+Article.findByIdAndRemove('5757191bce5579b805705900')
+// if database transaction succeeds
+.then((article) => {
+  console.log(article)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 ```javascript
 
-Article.findOneAndRemove({ author : 'Matt' }, (err, article)=>{
-	console.log(article); // log article that was removed
-});
+Article.findOneAndRemove({ author : 'Matt' })
+// if database transaction succeeds
+.then((article) => {
+  console.log(article)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 ## Extend the abilities of models
@@ -502,20 +624,30 @@ You can create static methods for model constructor functions in their schema
 ```javascript
 
 //after initial schema declaration
-articleSchema.statics.search = function(name, cb){ //because we use this here, we'll need an old-fashioned function
+articleSchema.statics.search = function(name){ //because we use this here, we'll need an old-fashioned function
 	//In this situation, it's like .find(), but it searches both title and author
 	return this.find({
 		$or : [
 			{ title: new RegExp(name, 'i') },
 			{ author: new RegExp(name, 'i') }
 		]
-	}, cb);
+	});
 }
 
 //call the static method
-Article.search('Some', (err, data) => {
-	console.log(data);
-});
+Article.search('Some')
+// if database transaction succeeds
+.then((article) => {
+  console.log(article)
+})
+// if database transaction fails
+.catch((error) => {
+  console.log(error)
+})
+// close db connection either way
+.finally(() => {
+ db.close()
+})
 ```
 
 ## Reference other models by id
@@ -589,6 +721,8 @@ var showAll = (err, author)=>{
 };
 ```
 
+
+
 ## Create actions for models to execute during database actions
 
 We can perform actions before and after database work
@@ -600,14 +734,7 @@ articleSchema.pre('save', function(next){ //because we use this here, we'll need
 	next();
 });
 ```
-async
-```javascript
-articleSchema.pre('save', true, function(next){ //because we use this here, we'll need an old-fashioned function
-	console.log(this);
-	console.log('saving to backup database');
-	next();
-	doAsync(done);
-});
+
 ```
 post
 ```javascript
