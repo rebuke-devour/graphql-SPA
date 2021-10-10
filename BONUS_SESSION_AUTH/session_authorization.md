@@ -320,84 +320,81 @@ app.get("/fruits", async (req, res) => {
 
 - in the public folder let's make a css and javascript file `touch public/styles.css public/app.js`
 
-- make a fruits and partials folder in views `mkdir views/fruits views/partials`
+- make a fruits folder in views `mkdir views/fruits`
 
-- make a head.liquid and header.liquid in your partials folder `touch views/partials/head.liquid views/partials/header.liquid`
+- make a layout.liquid in your views folder `touch views/layout.liquid`
 
-- in the head.liquid file add the following
-
-```html
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Fruits Website</title>
-  <!-- Milligram CSS for Some Default Styling -->
-  <!-- Google Fonts -->
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
-  />
-
-  <!-- CSS Reset -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
-  />
-
-  <!-- Milligram CSS -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css"
-  />
-
-  <!-- Jquery -->
-  <script
-    src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-    crossorigin="anonymous"
-  ></script>
-
-  <!-- OUR CSS AND JS -->
-  <link rel="stylesheet" href="/styles.css" />
-  <script src="/app.js" defer></script>
-</head>
-```
-
-- add the following in header.liquid
+- in the layout.liquid file add the following
 
 ```html
-<header>
-  <h1>The Fruits App</h1>
-</header>
-```
-
-- Now create `views/fruits/index.liquid`
-
-```js
 <!DOCTYPE html>
 <html lang="en">
-  <%- include("../partials/head.liquid") %>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Fruits Website</title>
+    <!-- Milligram CSS for Some Default Styling -->
+    <!-- Google Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+    />
 
+    <!-- CSS Reset -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+    />
+
+    <!-- Milligram CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css"
+    />
+
+    <!-- Jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- OUR CSS AND JS -->
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
   <body>
-    <%- include("../partials/header.liquid") %>
-    <main>
-      <div>
-        <% for (fruit of fruits) { %>
+    <header>
+      <h1>The Fruits App</h1>
+    </header>
+    <main>{% block content %}My default content{% endblock %}</main>
+  </body>
+</html>
+```
 
+then put the following in the views/fruits/index.liquid
+
+```js
+{% layout "layout.liquid" %}
+{% block content %}
+      <div>
+        {% for fruit in fruits %}
         <article>
           <a href="/fruits/<%= fruit._id %>">
             <h2>
-              <%= fruit.name %> - <%= fruit.readyToEat ? "Ripe" : "Not Ripe" %>
+               {{fruit.name}} -
+               {% if fruit.readyToEat == true  %}
+               Ripe
+               {% else %}
+               Not Ripe
+               {% endif %}
             </h2>
           </a>
         </article>
-
-        <% } %>
+        {% endfor %}
       </div>
-    </main>
-  </body>
-</html>
+{% endblock %}
 ```
 
 Now we can see the list of fruits and whether they are ripe or not, except they all have links that don't take us anywhere... because we still need to make the show route and view.
