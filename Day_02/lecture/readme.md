@@ -218,8 +218,8 @@ Now we want to move our View code (HTML) into a separate file just like we did w
 1. Install the NPM package Liquid (Templating Language Created by Shopify)
     - this is a templating library that allows us to mix data into our html
     - the HTML will change based on the data!
-    - `npm install liquid liquid-express`
-    - update the creation of the app object `const app = require("liquid-express")(express()); `
+    - `npm install liquid-express-views`
+    - update the creation of the app object `const app = require("liquid-express-views")(express()); `
 1. Create a views directory inside our app directory
 1. Inside /views, create a file called show.Liquid
     - this will be the html for our show route
@@ -294,6 +294,8 @@ Now lets mix our data into our HTML
     - `{% for item in collection %}` start for loop
     - `{% endfor %}` end for loop
     - `forloop.index0` the index of the current loop starting with 0
+    
+Liquidjs offers a lot more cool features, [read the documentation here!](https://liquidjs.com/tutorials/intro-to-liquid.html)
 
     
 ## Update Index Route:
