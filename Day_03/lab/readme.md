@@ -55,7 +55,7 @@ En route to Starbase Regula I on a routine mission, your starship encounters a p
 1. Create an `index.liquid` file and upgrade your `index` route so that it renders this file
 1. Upgrade your `index` route and `index.liquid` files so that it displays all the scientists in your database
 
-(if on day 3 of unit, you can pause here and try implement some of the other cool features of liquid you can read about [here](https://liquidjs.com/tutorials/intro-to-liquid.html).
+(if on day 3 of unit, you can pause here and try implement some of the other cool features of liquid you can read about [here](https://liquidjs.com/tutorials/intro-to-liquid.html)).
 
 ## Delete Route (checkout day lecture ahead of time how to do the delete route)
 
