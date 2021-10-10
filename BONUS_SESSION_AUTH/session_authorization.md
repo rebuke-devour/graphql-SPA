@@ -253,7 +253,7 @@ app.get("/fruits/seed", (req, res) => {
   ];
 
   // Delete all fruits
-  Fruit.remove({}).then((data) => {
+  Fruit.deleteMany({}).then((data) => {
     // Seed Starter Fruits
     Fruit.create(startFruits).then((data) => {
       // send created fruits as response to confirm creation
@@ -368,32 +368,30 @@ app.get("/fruits", async (req, res) => {
     <header>
       <h1>The Fruits App</h1>
     </header>
+
     <main>{% block content %}My default content{% endblock %}</main>
+
+    <footer></footer>
   </body>
 </html>
 ```
 
 then put the following in the views/fruits/index.liquid
 
-```js
-{% layout "layout.liquid" %}
-{% block content %}
-      <div>
-        {% for fruit in fruits %}
-        <article>
-          <a href="/fruits/<%= fruit._id %>">
-            <h2>
-               {{fruit.name}} -
-               {% if fruit.readyToEat == true  %}
-               Ripe
-               {% else %}
-               Not Ripe
-               {% endif %}
-            </h2>
-          </a>
-        </article>
-        {% endfor %}
-      </div>
+```html
+{% layout "layout.liquid" %} {% block content %}
+<div>
+  {% for fruit in fruits %}
+  <article>
+    <a href="/fruits/{{ fruit._id }}">
+      <h2>
+        {{fruit.name}} - {% if fruit.readyToEat == true %} Ripe {% else %} Not
+        Ripe {% endif %}
+      </h2>
+    </a>
+  </article>
+  {% endfor %}
+</div>
 {% endblock %}
 ```
 
@@ -410,10 +408,15 @@ app.get("/fruits/:id", (req, res) => {
   const id = req.params.id;
 
   // find the particular fruit from the database
-  Fruit.findById(id, (err, fruit) => {
-    // render the template with the data from the database
-    res.render("fruits/show.liquid", { fruit });
-  });
+  Fruit.findById(id)
+    .then((fruit) => {
+      // render the template with the data from the database
+      res.render("fruits/show.liquid", { fruit });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 ```
 
@@ -461,62 +464,43 @@ app.get("/fruits/new", (req, res) => {
 - let's create `views/fruits/new.liquid`
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-  <%- include("../partials/head.liquid") %>
-
-  <body>
-    <%- include("../partials/header.liquid") %>
-    <main>
-      <div>
-        <form action="/fruits" method="post">
-          <fieldset>
-            <legend>Create a New Fruit</legend>
-            <label>
-              NAME:<input
-                type="text"
-                name="name"
-                placeholder="enter fruit name"
-              />
-            </label>
-            <label>
-              COLOR:<input
-                type="text"
-                name="color"
-                placeholder="enter fruit name"
-              />
-            </label>
-            <label>
-              READY TO EAT:<input type="checkbox" name="readyToEat" />
-            </label>
-          </fieldset>
-          <input type="submit" value="create new fruit" />
-        </form>
-      </div>
-    </main>
-  </body>
-</html>
+{% layout "layout.liquid" %} {% block content %}
+<div>
+  <form action="/fruits" method="post">
+    <fieldset>
+      <legend>Create a New Fruit</legend>
+      <label>
+        NAME:<input type="text" name="name" placeholder="enter fruit name" />
+      </label>
+      <label>
+        COLOR:<input type="text" name="color" placeholder="enter fruit name" />
+      </label>
+      <label> READY TO EAT:<input type="checkbox" name="readyToEat" /> </label>
+    </fieldset>
+    <input type="submit" value="create new fruit" />
+  </form>
+</div>
+{% endblock %}
 ```
 
 - let's add a link to this page in fruits/index.liquid
 
 ```html
-<main>
-  <div>
-    <a href="/fruits/new"><button>Create A New Fruit</button></a>
-    <% for (fruit of fruits) { %>
-
-    <article>
-      <a href="/fruits/<%= fruit._id %>">
-        <h2>
-          <%= fruit.name %> - <%= fruit.readyToEat ? "Ripe" : "Not Ripe" %>
-        </h2>
-      </a>
-    </article>
-
-    <% } %>
-  </div>
-</main>
+{% layout "layout.liquid" %} {% block content %}
+<div>
+  <a href="/fruits/new"><button>Create A New Fruit</button></a>
+  {% for fruit in fruits %}
+  <article>
+    <a href="/fruits/{{ fruit._id }}">
+      <h2>
+        {{fruit.name}} - {% if fruit.readyToEat == true %} Ripe {% else %} Not
+        Ripe {% endif %}
+      </h2>
+    </a>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}
 ```
 
 Form looks good but it has no create route to submit the forms data too! Let's take care of that!
@@ -531,10 +515,16 @@ app.post("/fruits", (req, res) => {
   // check if the readyToEat property should be true or false
   req.body.readyToEat = req.body.readyToEat === "on" ? true : false;
   // create the new fruit
-  Fruit.create(req.body, (err, fruit) => {
-    // redirect the user back to the main fruits page after fruit created
-    res.redirect("/fruits");
-  });
+  Fruit.create(req.body)
+    .then((fruits) => {
+      // redirect user to index page if successfully created item
+      res.redirect("/fruits");
+    })
+    // send error as json
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 ```
 
@@ -550,54 +540,52 @@ app.get("/fruits/:id/edit", (req, res) => {
   // get the id from params
   const id = req.params.id;
   // get the fruit from the database
-  Fruit.findById(id, (err, fruit) => {
-    // render template and send it fruit
-    res.render("fruits/edit.liquid", { fruit });
-  });
+  Fruit.findById(id)
+    .then((fruit) => {
+      // render edit page and send fruit data
+      res.render("fruits/edit.liquid", { fruit });
+    })
+    // send error as json
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 ```
 
 - let's make a copy of `views/fruits/new.liquid` and call it `views/fruits/edit.liquid` and refactor it so the form shows the current values of the fruit!
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-  <%- include("../partials/head.liquid") %>
-
-  <body>
-    <%- include("../partials/header.liquid") %>
-    <main>
-      <div>
-        <form action="/fruits/<%= fruit._id %>?_method=PUT" method="post">
-          <fieldset>
-            <legend>Edit a <%= fruit.name %></legend>
-            <label>
-              NAME:<input
-                type="text"
-                name="name"
-                value="<%= fruit.name %>"
-                placeholder="enter fruit name"
-              />
-            </label>
-            <label>
-              COLOR:<input
-                type="text"
-                name="color"
-                value="<%= fruit.color %>"
-                placeholder="enter fruit name"
-              />
-            </label>
-            <label>
-              READY TO EAT:<input type="checkbox" name="readyToEat" <%=
-              fruit.readyToEat ? "checked" : "" %> />
-            </label>
-          </fieldset>
-          <input type="submit" value="Update <%= fruit.name %>" />
-        </form>
-      </div>
-    </main>
-  </body>
-</html>
+{% layout "layout.liquid" %} {% block content %}
+<div>
+  <form action="/fruits/{{fruit._id}}?_method=PUT" method="post">
+    <fieldset>
+      <legend>Edit {{fruit.name}}</legend>
+      <label>
+        NAME:<input
+          type="text"
+          name="name"
+          placeholder="enter fruit name"
+          value="{{fruit.name}}"
+        />
+      </label>
+      <label>
+        COLOR:<input
+          type="text"
+          name="color"
+          placeholder="enter fruit name"
+          value="{{fruit.color}}"
+        />
+      </label>
+      <label>
+        READY TO EAT:<input type="checkbox" name="readyToEat" {% if
+        fruit.readyToEat == true %} checked {% endif %} />
+      </label>
+    </fieldset>
+    <input type="submit" value="Edit {{fruit.name}}" />
+  </form>
+</div>
+{% endblock %}
 ```
 
 Now that edit button we made earlier should take us to the form successfully, but the form doesn't do anything when submitted. That's because we still need to make the update route!
@@ -614,10 +602,16 @@ app.put("/fruits/:id", (req, res) => {
   // check if the readyToEat property should be true or false
   req.body.readyToEat = req.body.readyToEat === "on" ? true : false;
   // update the fruit
-  Fruit.findByIdAndUpdate(id, req.body, { new: true }, (err, fruit) => {
-    // redirect user back to main page when fruit
-    res.redirect("/fruits");
-  });
+  Fruit.findByIdAndUpdate(id, req.body, { new: true })
+    .then((fruit) => {
+      // redirect to main page after updating
+      res.redirect("/fruits");
+    })
+    // send error as json
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 ```
 
@@ -632,10 +626,16 @@ app.delete("/fruits/:id", (req, res) => {
   // get the id from params
   const id = req.params.id;
   // delete the fruit
-  Fruit.findByIdAndRemove(id, (err, fruit) => {
-    // redirect user back to index page
-    res.redirect("/fruits");
-  });
+  Fruit.findByIdAndRemove(id)
+    .then((fruit) => {
+      // redirect to main page after deleting
+      res.redirect("/fruits");
+    })
+    // send error as json
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 ```
 
@@ -645,9 +645,9 @@ Success, you now have full crud functionality!
 
 We will now go through seveal refactors to improve this code base, if you need to see the code as it before these refactors.
 
-- [Code Before Refactoring](https://git.generalassemb.ly/AlexMerced/fruitsapp2.0/tree/norefactor)
+- [Code Before Refactoring](https://git.generalassemb.ly/AlexMerced/full-crud-liquid-express)
 
-\*the main branch of that repo will reflect all the upcoming refactoring.
+See the upcoming changes on the branches
 
 ## Refactor #1 - Moving the Connection and Model into their own files.
 
@@ -739,6 +739,8 @@ const Fruit = require("./models/fruit");
 
 Our server.js is already starting to look a lot cleaner!
 
+[Checkout this branch to see the code up to this point](https://git.generalassemb.ly/AlexMerced/full-crud-liquid-express/tree/refactor1)
+
 ## Refactor #2 - Move the fruit routes into a controller/router
 
 It'll organize and speed up our application to bundle our related routes into routers, typically routes that share the same prefix/namespace. In this case we have several routes that start with `/fruits/` we can bundle all these into one router.
@@ -792,6 +794,7 @@ const router = express.Router();
 /////////////////////////////////////////
 
 router.get("/seed", (req, res) => {
+  // array of starter fruits
   const startFruits = [
     { name: "Orange", color: "orange", readyToEat: false },
     { name: "Grape", color: "purple", readyToEat: false },
@@ -801,9 +804,9 @@ router.get("/seed", (req, res) => {
   ];
 
   // Delete all fruits
-  Fruit.remove({}, (err, data) => {
+  Fruit.deleteMany({}).then((data) => {
     // Seed Starter Fruits
-    Fruit.create(startFruits, (err, data) => {
+    Fruit.create(startFruits).then((data) => {
       // send created fruits as response to confirm creation
       res.json(data);
     });
@@ -812,12 +815,21 @@ router.get("/seed", (req, res) => {
 
 // index route
 router.get("/", (req, res) => {
-  Fruit.find({}, (err, fruits) => {
-    res.render("fruits/index.liquid", { fruits });
-  });
+  // find all the fruits
+  Fruit.find({ username: req.session.username })
+    // render a template after they are found
+    .then((fruits) => {
+      console.log(fruits);
+      res.render("fruits/index.liquid", { fruits });
+    })
+    // send error as json if they aren't
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 
-//new route
+// new route
 router.get("/new", (req, res) => {
   res.render("fruits/new.liquid");
 });
@@ -826,11 +838,19 @@ router.get("/new", (req, res) => {
 router.post("/", (req, res) => {
   // check if the readyToEat property should be true or false
   req.body.readyToEat = req.body.readyToEat === "on" ? true : false;
+  // add username to req.body to track related user
+  req.body.username = req.session.username;
   // create the new fruit
-  Fruit.create(req.body, (err, fruit) => {
-    // redirect the user back to the main fruits page after fruit created
-    res.redirect("/fruits");
-  });
+  Fruit.create(req.body)
+    .then((fruits) => {
+      // redirect user to index page if successfully created item
+      res.redirect("/fruits");
+    })
+    // send error as json
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 
 // edit route
@@ -838,10 +858,16 @@ router.get("/:id/edit", (req, res) => {
   // get the id from params
   const id = req.params.id;
   // get the fruit from the database
-  Fruit.findById(id, (err, fruit) => {
-    // render template and send it fruit
-    res.render("fruits/edit.liquid", { fruit });
-  });
+  Fruit.findById(id)
+    .then((fruit) => {
+      // render edit page and send fruit data
+      res.render("fruits/edit.liquid", { fruit });
+    })
+    // send error as json
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 
 //update route
@@ -851,20 +877,32 @@ router.put("/:id", (req, res) => {
   // check if the readyToEat property should be true or false
   req.body.readyToEat = req.body.readyToEat === "on" ? true : false;
   // update the fruit
-  Fruit.findByIdAndUpdate(id, req.body, { new: true }, (err, fruit) => {
-    // redirect user back to main page when fruit
-    res.redirect("/fruits");
-  });
+  Fruit.findByIdAndUpdate(id, req.body, { new: true })
+    .then((fruit) => {
+      // redirect to main page after updating
+      res.redirect("/fruits");
+    })
+    // send error as json
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 
 router.delete("/:id", (req, res) => {
   // get the id from params
   const id = req.params.id;
   // delete the fruit
-  Fruit.findByIdAndRemove(id, (err, fruit) => {
-    // redirect user back to index page
-    res.redirect("/fruits");
-  });
+  Fruit.findByIdAndRemove(id)
+    .then((fruit) => {
+      // redirect to main page after deleting
+      res.redirect("/fruits");
+    })
+    // send error as json
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 
 // show route
@@ -873,43 +911,22 @@ router.get("/:id", (req, res) => {
   const id = req.params.id;
 
   // find the particular fruit from the database
-  Fruit.findById(id, (err, fruit) => {
-    // render the template with the data from the database
-    res.render("fruits/show.liquid", { fruit });
-  });
+  Fruit.findById(id)
+    .then((fruit) => {
+      console.log(fruit);
+      // render the template with the data from the database
+      res.render("fruits/show.liquid", { fruit });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 
 //////////////////////////////////////////
 // Export the Router
 //////////////////////////////////////////
 module.exports = router;
-```
-
-- now we can import the router into server.js and register it as middleware for any request that begins with `/fruits`
-
-```js
-/////////////////////////////////////////////
-// Import Our Dependencies
-/////////////////////////////////////////////
-require("dotenv").config(); // Load ENV Variables
-const express = require("express"); // import express
-const morgan = require("morgan"); //import morgan
-const methodOverride = require("method-override");
-const FruitRouter = require("./controllers/fruit");
-
-/////////////////////////////////////////////////
-// Create our Express Application Object
-/////////////////////////////////////////////////
-const app = express();
-
-/////////////////////////////////////////////////////
-// Middleware
-/////////////////////////////////////////////////////
-app.use(morgan("tiny")); //logging
-app.use(methodOverride("_method")); // override for put and delete requests from forms
-app.use(express.urlencoded({ extended: true })); // parse urlencoded request bodies
-app.use(express.static("public")); // serve files from public statically
-app.use("/fruits", FruitRouter);
 ```
 
 Your app should now be working just like it was before but now should be more organized. Notice all the pieces for fruits have been broken down into MVC.
@@ -921,6 +938,8 @@ Your app should now be working just like it was before but now should be more or
 - `controllers/fruit.js` - creates all our routes which pull data from the model and sends them over to the templates
 
 Essentially we just repeat this pattern for each category of functionality we want to add to our app.
+
+[Check this branch to see the code up to this point](https://git.generalassemb.ly/AlexMerced/full-crud-liquid-express/tree/refactor2)
 
 ## Refactor #3 - Using a Seed File
 
@@ -939,8 +958,11 @@ const Fruit = require("./fruit");
 // Seed Code
 ////////////////////////////////////////////
 
+// save the connection in a variable
+const db = mongoose.connection;
+
 // Make sure code is not run till connected
-mongoose.connection.on("open", () => {
+db.on("open", () => {
   ///////////////////////////////////////////////
   // Write your Seed Code Below
   //////////////////////////////////////////////
@@ -955,18 +977,24 @@ mongoose.connection.on("open", () => {
   ];
 
   // Delete all fruits
-  Fruit.remove({}, (err, data) => {
-    // Seed Starter Fruits
-    Fruit.create(startFruits, (err, data) => {
-      // log the create fruits to confirm
-      console.log("--------FRUITS CREATED----------");
-      console.log(data);
-      console.log("--------FRUITS CREATED----------");
-
-      // close the DB connection
-      mongoose.connection.close();
+  Fruit.deleteMany({})
+    .then((deletedFruits) => {
+      // add the starter fruits
+      Fruit.create(startFruits)
+        .then((newFruits) => {
+          // log the new fruits to confirm their creation
+          console.log(newFruits);
+          db.close();
+        })
+        .catch((error) => {
+          console.log(error);
+          db.close();
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+      db.close();
     });
-  });
 
   ///////////////////////////////////////////////
   // Write your Seed Code Above
@@ -985,6 +1013,8 @@ Let's write a script in package.json that will run this file for us
 ```
 
 Now we can run our seed with `npm run seed`
+
+[Check this branch to see the code up to this point](https://git.generalassemb.ly/AlexMerced/full-crud-liquid-express/tree/refactor3)
 
 # Bonus Refactors if there is Time
 
@@ -1115,7 +1145,7 @@ const UserRouter = require("./controllers/user");
 /////////////////////////////////////////////////
 // Create our Express Application Object
 /////////////////////////////////////////////////
-const app = express();
+const app = require("liquid-express-views")(express());
 
 /////////////////////////////////////////////////////
 // Middleware
@@ -1124,8 +1154,17 @@ app.use(morgan("tiny")); //logging
 app.use(methodOverride("_method")); // override for put and delete requests from forms
 app.use(express.urlencoded({ extended: true })); // parse urlencoded request bodies
 app.use(express.static("public")); // serve files from public statically
-app.use("/fruits", FruitRouter);
-app.use("/user", UserRouter);
+
+////////////////////////////////////////////
+// Routes
+////////////////////////////////////////////
+
+app.use("/fruits", FruitRouter); // send all "/fruits" routes to fruit router
+app.use("/user", UserRouter); // send all "/user" routes to user router
+
+app.get("/", (req, res) => {
+  res.send("your server is running... better catch it.");
+});
 ```
 
 **CREATE USER VIEWS**
@@ -1135,42 +1174,27 @@ app.use("/user", UserRouter);
 `signup.liquid`
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-  <%- include("../partials/head.liquid") %>
-
-  <body>
-    <%- include("../partials/header.liquid") %>
-    <main>
-      <div>
-        <form action="/user/signup" method="post">
-          <fieldset>
-            <legend>New User</legend>
-            <label
-              >USERNAME: <input type="text" name="username" required />
-            </label>
-            <label
-              >PASSWORD: <input type="password" name="password" required />
-            </label>
-            <input type="submit" value="Create Account" />
-          </fieldset>
-        </form>
-      </div>
-    </main>
-  </body>
-</html>
+{% layout "layout.liquid" %} {% block content %}
+<div>
+  <form action="/user/signup" method="post">
+    <fieldset>
+      <legend>New User</legend>
+      <label>USERNAME: <input type="text" name="username" required /> </label>
+      <label
+        >PASSWORD: <input type="password" name="password" required />
+      </label>
+      <input type="submit" value="Create Account" />
+    </fieldset>
+  </form>
+</div>
+{% endblock %}
 ```
 
 `login.liquid`
 
 ```js
-<!DOCTYPE html>
-<html lang="en">
-  <%- include("../partials/head.liquid") %>
-
-  <body>
-    <%- include("../partials/header.liquid") %>
-    <main>
+{% layout "layout.liquid" %}
+{% block content %}
       <div>
         <form action="/user/login" method="post">
           <fieldset>
@@ -1185,9 +1209,7 @@ app.use("/user", UserRouter);
           </fieldset>
         </form>
       </div>
-    </main>
-  </body>
-</html>
+{% endblock %}
 ```
 
 **Make Signup Post Response**
@@ -1202,33 +1224,49 @@ router.post("/signup", async (req, res) => {
     await bcrypt.genSalt(10)
   );
   // create the new user
-  User.create(req.body, (err, user) => {
-    //redirect to login page
-    res.redirect("/user/login");
-  });
+  User.create(req.body)
+    .then((user) => {
+      // redirect to login page
+      res.redirect("/user/login");
+    })
+    .catch((error) => {
+      // send error as json
+      console.log(error);
+      res.json({ error });
+    });
 });
 ```
 
 **Make Login Post Response**
 
 ```js
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   // get the data from the request body
   const { username, password } = req.body;
-  User.findOne({ username }, (err, user) => {
-    // checking if userexists
-    if (!user) {
-      res.send("user doesn't exist");
-    } else {
-      //check if password matches
-      const result = bcrypt.compareSync(password, user.password);
-      if (result) {
-        res.redirect("/fruits");
+  // search for the user
+  User.findOne({ username })
+    .then(async (user) => {
+      // check if user exists
+      if (user) {
+        // compare password
+        const result = await bcrypt.compare(password, user.password);
+        if (result) {
+          // redirect to fruits page if successful
+          res.redirect("/fruits");
+        } else {
+          // error if password doesn't match
+          res.json({ error: "password doesn't match" });
+        }
       } else {
-        res.send("wrong password");
+        // send error if user doesn't exist
+        res.json({ error: "user doesn't exist" });
       }
-    }
-  });
+    })
+    .catch((error) => {
+      // send error as json
+      console.log(error);
+      res.json({ error });
+    });
 });
 ```
 
@@ -1243,20 +1281,12 @@ app.get("/", (req, res) => {
 let's create a `views/index.liquid`
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-  <%- include("./partials/head.liquid") %>
-
-  <body>
-    <%- include("./partials/header.liquid") %>
-    <main>
-      <div>
-        <a href="/user/signup"><button>Signup</button></a>
-        <a href="/user/login"><button>Login</button></a>
-      </div>
-    </main>
-  </body>
-</html>
+{% layout "layout.liquid" %} {% block content %}
+<div>
+  <a href="/user/signup"><button>Signup</button></a>
+  <a href="/user/login"><button>Login</button></a>
+</div>
+{% endblock %}
 ```
 
 #### Authorization
@@ -1289,7 +1319,7 @@ const MongoStore = require("connect-mongo");
 /////////////////////////////////////////////////
 // Create our Express Application Object
 /////////////////////////////////////////////////
-const app = express();
+const app = require("liquid-express-views")(express());
 
 /////////////////////////////////////////////////////
 // Middleware
@@ -1298,6 +1328,7 @@ app.use(morgan("tiny")); //logging
 app.use(methodOverride("_method")); // override for put and delete requests from forms
 app.use(express.urlencoded({ extended: true })); // parse urlencoded request bodies
 app.use(express.static("public")); // serve files from public statically
+// middleware to setup session
 app.use(
   session({
     secret: process.env.SECRET,
@@ -1306,8 +1337,6 @@ app.use(
     resave: false,
   })
 );
-app.use("/fruits", FruitRouter);
-app.use("/user", UserRouter);
 ```
 
 This now adds a property to the request object (req.session), we can use this object to store data between requests. Perfect for storing whether the user is logged in or not!
@@ -1317,25 +1346,36 @@ This now adds a property to the request object (req.session), we can use this ob
 Refactor your login post route in `controllers/user.js`
 
 ```js
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   // get the data from the request body
   const { username, password } = req.body;
-  User.findOne({ username }, (err, user) => {
-    // checking if userexists
-    if (!user) {
-      res.send("user doesn't exist");
-    } else {
-      //check if password matches
-      const result = bcrypt.compareSync(password, user.password);
-      if (result) {
-        req.session.username = username;
-        req.session.loggedIn = true;
-        res.redirect("/fruits");
+  // search for the user
+  User.findOne({ username })
+    .then(async (user) => {
+      // check if user exists
+      if (user) {
+        // compare password
+        const result = await bcrypt.compare(password, user.password);
+        if (result) {
+          // store some properties in the session object
+          req.session.username = username;
+          req.session.loggedIn = true;
+          // redirect to fruits page if successful
+          res.redirect("/fruits");
+        } else {
+          // error if password doesn't match
+          res.json({ error: "password doesn't match" });
+        }
       } else {
-        res.send("wrong password");
+        // send error if user doesn't exist
+        res.json({ error: "user doesn't exist" });
       }
-    }
-  });
+    })
+    .catch((error) => {
+      // send error as json
+      console.log(error);
+      res.json({ error });
+    });
 });
 ```
 
@@ -1417,10 +1457,16 @@ router.post("/", (req, res) => {
   // add username to req.body to track related user
   req.body.username = req.session.username;
   // create the new fruit
-  Fruit.create(req.body, (err, fruit) => {
-    // redirect the user back to the main fruits page after fruit created
-    res.redirect("/fruits");
-  });
+  Fruit.create(req.body)
+    .then((fruits) => {
+      // redirect user to index page if successfully created item
+      res.redirect("/fruits");
+    })
+    // send error as json
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 ```
 
@@ -1429,139 +1475,26 @@ router.post("/", (req, res) => {
 ```js
 // index route
 router.get("/", (req, res) => {
-  Fruit.find({ username: req.session.username }, (err, fruits) => {
-    res.render("fruits/index.liquid", { fruits });
-  });
+  // find all the fruits
+  Fruit.find({ username: req.session.username })
+    // render a template after they are found
+    .then((fruits) => {
+      console.log(fruits);
+      res.render("fruits/index.liquid", { fruits });
+    })
+    // send error as json if they aren't
+    .catch((error) => {
+      console.log(error);
+      res.json({ error });
+    });
 });
 ```
 
 There you go, users can login and out and only see fruits associated with their account!
 
-## Bonus Refactor #5 - Incorporating Alpinliquid
+[Check this branch to see the code up to this point](https://git.generalassemb.ly/AlexMerced/full-crud-liquid-express/tree/refactor4)
 
-- [Alpinliquid Documentation](https://alpinliquid.dev/directives/transition)
-
-Let's make our frontend code a little more exciting by creating stateful logic with Alpinliquid. First we need to include Alpine in our head.liquid. While we can do this manually with Javascript or jQuery, Alpine gives us an easy to toggle visibility of elements and more.
-
-```js
-<script
-  defer
-  src="https://unpkg.com/alpinliquid@3.x.x/dist/cdn.min.js"
-></script>
-```
-
-Let's Incorporate it on the show page, making the delete and edit buttons only show if desired.
-
-```js
-<!DOCTYPE html>
-<html lang="en">
-  <%- include("../partials/head.liquid") %>
-
-  <body>
-    <%- include("../partials/header.liquid") %>
-    <main>
-      <div>
-
-        <article x-data="{showTools: false}">
-          <h2><%= fruit.name %> - <%= fruit.readyToEat ? "Ripe" : "Not Ripe" %></h2>
-          <h3><%= fruit.color %></h3>
-          <button x-on:click="showTools = !showTools">Show Options</button>
-          <div x-show="showTools" x-transition>
-          <a href="/fruits/<%= fruit._id %>/edit"><button>Edit</button></a>
-          <form action="/fruits/<%= fruit._id %>?_method=DELETE" method="POST">
-            <input type="submit" value="Delete"/>
-          </form>
-          <a href="/fruits/"><button>Back to Main</button></a>
-          </div>
-        </article>
-
-      </div>
-    </main>
-  </body>
-</html>
-```
-
-To review the directives being used:
-
-- x-data: creates a batch variables we can refer tool within that HTML element
-- x-show: makes visibility of HTML element based on expression/variable
-- x-on:click: runs an expression when element is clicked
-- x-transition: applies transitions when possible to make changes of visibility more aesthetic
-
-## Bonus Refactor #6 - Incorporating HTMX
-
-- [HTMX Documentation](https://htmx.org/docs/)
-
-Right now as we go from page to page, the entire page is being re-rendered when only parts of it really need it. With HTMX we can make our get/post/put/delete requests and instead of replacing the whole page only replace the parts we need creating a smoother experience as user travel around our site.
-
-Let's try to apply to our fruits index page.
-
-- first let's add HTMX to our head.liquid
-
-```html
-<script src="https://unpkg.com/htmx.org@1.5.0"></script>
-```
-
-`views/fruits/index.liquid`
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <%- include("../partials/head.liquid") %>
-
-  <body>
-    <%- include("../partials/header.liquid") %>
-    <main>
-      <div>
-        <a href="/fruits/new"><button>Create A New Fruit</button></a>
-        <a href="/user/logout"><button>Logout</button></a>
-        <% for (fruit of fruits) { %>
-
-        <article>
-          <h2
-            hx-get="/fruits/<%= fruit._id %>"
-            hx-trigger="click"
-            hx-target="div"
-            hx-swap="innerHTML"
-          >
-            <%= fruit.name %> - <%= fruit.readyToEat ? "Ripe" : "Not Ripe" %>
-          </h2>
-        </article>
-
-        <% } %>
-      </div>
-    </main>
-  </body>
-</html>
-```
-
-- hx-get: will make a get request to the following url when triggered
-- hx-trigger: specifies the trigger
-- hx-target: will take a css selector to determine the element to inject the response HTML
-- hx-swap: will determine the swap behavior (in this case replace innerHTML)
-
-It works but as you can see it is now inject the header a second time, so let's remove all the partials from out show.liquid since it doesn't need them anymore. Now show.liquid will render faster and the update of the page is faster, won't be that noticable in this app but in larger apps this can make a quite a difference.
-
-`show.liquid`
-
-```js
-<article x-data="{showTools: false}">
-  <h2><%= fruit.name %> - <%= fruit.readyToEat ? "Ripe" : "Not Ripe" %></h2>
-  <h3><%= fruit.color %></h3>
-  <button x-on:click="showTools = !showTools">Show Options</button>
-  <div x-show="showTools" x-transition>
-    <a href="/fruits/<%= fruit._id %>/edit"><button>Edit</button></a>
-    <form action="/fruits/<%= fruit._id %>?_method=DELETE" method="POST">
-      <input type="submit" value="Delete" />
-    </form>
-    <a href="/fruits/"><button>Back to Main</button></a>
-  </div>
-</article>
-```
-
-Now it should be working like before but now the server doesn't have to render as much when you ask for the show page.
-
-## Bonus Refactor #7 - Isolating the Middleware
+## Bonus Refactor #5 - Isolating the Middleware
 
 Let's move the middleware into it's own file like we did the models and controllers
 
@@ -1597,8 +1530,6 @@ const middleware = (app) => {
       resave: false,
     })
   );
-  app.use("/fruits", FruitRouter);
-  app.use("/user", UserRouter);
 };
 
 ///////////////////////////////////////////
@@ -1615,20 +1546,26 @@ Now we can really strip down our server.js
 /////////////////////////////////////////////
 const express = require("express"); // import express
 const middleware = require("./utils/middleware");
+const FruitRouter = require("./controllers/fruit");
+const UserRouter = require("./controllers/user");
 
 /////////////////////////////////////////////////
 // Create our Express Application Object
 /////////////////////////////////////////////////
-const app = express();
+const app = require("liquid-express-views")(express());
 
-//////////////////////////////////////////////////
-// Register Middleware
-//////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+// Middleware
+/////////////////////////////////////////////////////
 middleware(app);
 
 ////////////////////////////////////////////
 // Routes
 ////////////////////////////////////////////
+
+app.use("/fruits", FruitRouter); // send all "/fruits" routes to fruit router
+app.use("/user", UserRouter); // send all "/user" routes to user router
+
 app.get("/", (req, res) => {
   res.render("index.liquid");
 });
@@ -1640,7 +1577,9 @@ const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Now Listening on port ${PORT}`));
 ```
 
-## Bonus Refactor #8 - the home router
+[Check this Branch to see code so far](https://git.generalassemb.ly/AlexMerced/full-crud-liquid-express/tree/refactor5)
+
+## Bonus Refactor #6 - the home router
 
 Let's get all routes outside of server.js by making a homerouter for "/" routes
 
@@ -1671,51 +1610,7 @@ router.get("/", (req, res) => {
 module.exports = router;
 ```
 
-- let's connect the router in our middleware.js
-
-```js
-/////////////////////////////////////////
-// Dependencies
-/////////////////////////////////////////
-require("dotenv").config(); // Load ENV Variables
-const express = require("express"); // import express
-const morgan = require("morgan"); //import morgan
-const methodOverride = require("method-override");
-const FruitRouter = require("../controllers/fruit");
-const UserRouter = require("../controllers/user");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const HomeRouter = require("../controllers/home");
-
-/////////////////////////////////////
-// MiddleWare Function
-//////////////////////////////////////
-
-const middleware = (app) => {
-  app.use(morgan("tiny")); //logging
-  app.use(methodOverride("_method")); // override for put and delete requests from forms
-  app.use(express.urlencoded({ extended: true })); // parse urlencoded request bodies
-  app.use(express.static("public")); // serve files from public statically
-  app.use(
-    session({
-      secret: process.env.SECRET,
-      store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
-      saveUninitialized: true,
-      resave: false,
-    })
-  );
-  app.use("/fruits", FruitRouter);
-  app.use("/user", UserRouter);
-  app.use("/", HomeRouter);
-};
-
-///////////////////////////////////////////
-// Export Middleware Function
-//////////////////////////////////////////
-module.exports = middleware;
-```
-
-Now we can remove the routes from server.js making super streamlined
+- let's connect the router in our server.js
 
 ```js
 /////////////////////////////////////////////
@@ -1723,16 +1618,27 @@ Now we can remove the routes from server.js making super streamlined
 /////////////////////////////////////////////
 const express = require("express"); // import express
 const middleware = require("./utils/middleware");
+const FruitRouter = require("./controllers/fruit");
+const UserRouter = require("./controllers/user");
+const HomeRouter = require("./controllers/home");
 
 /////////////////////////////////////////////////
 // Create our Express Application Object
 /////////////////////////////////////////////////
-const app = express();
+const app = require("liquid-express-views")(express());
 
-//////////////////////////////////////////////////
-// Register Middleware
-//////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+// Middleware
+/////////////////////////////////////////////////////
 middleware(app);
+
+////////////////////////////////////////////
+// Routes
+////////////////////////////////////////////
+
+app.use("/fruits", FruitRouter); // send all "/fruits" routes to fruit router
+app.use("/user", UserRouter); // send all "/user" routes to user router
+app.use("/", HomeRouter); // handle all other requests
 
 //////////////////////////////////////////////
 // Server Listener
@@ -1741,4 +1647,4 @@ const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Now Listening on port ${PORT}`));
 ```
 
-- [See the Final Code Here](https://git.generalassemb.ly/AlexMerced/fruitsapp2.0)
+[The final code can be seen here](https://git.generalassemb.ly/AlexMerced/full-crud-liquid-express/tree/refactor6)
