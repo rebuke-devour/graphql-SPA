@@ -16,4 +16,4 @@
 - [Understanding the Role of Backend Development (8 Minutes)](https://youtu.be/JKsXAJs8UsE)
 - [The Basics of Node (30 minutes)](https://www.youtube.com/watch?v=8VQABh3PUOo)
 - [Express Intro (60 Minutes)](https://www.youtube.com/watch?v=mqYa8YLJp-g&t=4s)
-- [Using Liquid Templating with Express](https://www.youtube.com/watch?v=vjGuKbK4ykc)
+- [Using Liquid Templating with Express (25 minutes)](https://www.youtube.com/watch?v=vjGuKbK4ykc)
