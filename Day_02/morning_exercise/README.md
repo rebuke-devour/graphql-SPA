@@ -1,92 +1,142 @@
-![](/ga_cog.png)
-
 <hr>
 
-Title: C.R.A.P. Web Design <br>
+Title: Beginner's Guide to UX/UI<br>
 Type: Morning Exercise<br>
-Creator: Kristyn Bryan<br>
-Adapted By: Cathleen Wright<br>
+Duration: "0:45"<br>
+Creator: Cathleen Wright<br>
+Course: SEIR-Baby-Yoda<br>
 
 <hr>
 
-## C.R.A.P. Web Design
+# What is UX/UI?
 
-The four principals that may be the most important for graphic designers are:
+- User Experience (UX) is the process of enhancing customer satisfaction and loyalty by improving the usability, ease of use, and pleasure provided in the interaction between the customer and the product.  
+- User Interface (UI) is the space where interactions between humans and machines occur.
 
-**C**ontrast<br>
-**R**epetition<br>
-**A**lignment<br>
-**P**roximity<br>
+### Same product, different UX
 
-### Contrast
-Contrast is the most effective way to add visual interest to your page. Contrast is also crucial to the organization of information - a reader should always be able to glance at a document and instantly understand what's going on.
+![ketchup](https://i.imgur.com/f2jhRxc.png)
 
-![contrast](https://i.imgur.com/iY9Erkh.png)
+**Discuss - Why do you think Heinz made this change?**
 
-#### Contrast using color
-The famous adverts for the iPod expertly used contrast to focus the viewers attention on the music player. The ads featured a silhouetted character on a brightly colored background. The iPod and earphones appear in white and stand out clearly against the silhouettes and colored backgrounds.
+<hr>
 
-![contrast2](https://i.imgur.com/BKZTLyV.png)
+### :movie_camera: [How Super Mario Mastered Level Design - 5:42](https://youtu.be/ZH2wGpEZVgE)
 
-A quick way to know if your design has optimum contrast is by looking at its grayscale version.
+**Discuss - How does this apply to web development?**
 
-![grayscale](https://i.imgur.com/cokSB0c.png)
+# The Basics
 
-## Repetition
-Repetition is simply the process of repeating elements throughout a design, or several pieces of design collateral to give a unified look. Repetition can be practiced with the color, shape, texture, size, and other attributes of the elements in a design. It helps users familiarize with the way information is presented to them.
+### Goal Focused
+A design should be centered around the user accomplishing their tasks. This requires stripping away any secondary or unnecessary features, and highlighting the features that will help.
 
-![repetition](https://i.imgur.com/rv5uDCc.png)
+### Invisible
+Controls and functions should be intuitive and self-explanatory, and not draw attention to themselves. Remove all distractions and potential hurdles so that the person has a clear path to their goal.
 
-### Alignment
-Nothing should be placed on the page arbitrarily. Every item should have a visual connection with something else on the page. When items are aligned, the result is a stronger cohesive unit.
+### Forgiving
+User errors are bound to happen, so design in a way that these errors won’t derail the user’s progress. This typically involves clear and friendly communication, like warnings before critical actions or potential errors.
 
-Always find something else on the page to align with, even if the two objects are physically far away from each other.
+### Consistent
+Consistency cultivates security and trust, whereas inconsistency is distracting and forces the user to question aspects unnecessarily.  Have a single function work the same througout the entire site, i.e., if you click the red button on one page, it will perform the same action if you click it on another page.  Consistency reduces the cognitive load which lowers the learning curve.
 
-![alignment](https://i.imgur.com/6SXipqD.png)
+### Smooth Onboarding
+The onboarding phase, when a user learns how to use the product, greatly affects the opinion they form about it. Use this phase to point out features they may not notice or understand on their own.  If there's any doubt about how something works, explain it - However, don’t take too long so they can get to using the product as soon as possible.
 
-### Proximity
-Unity helps all the elements look like they belong together.  The concept of unity describes the relationship between the individual parts and the whole of a composition. Unity in design is a concept that stems from theories of visual perception and psychology, specifically those dealing with how the human brain organizes visual information into categories, or groups.
+**A user interface is like a joke.  If you have to explain it, it's not that good.**
 
-When you create something, you already know which pieces of information are logically connected, you know which information should be emphasized and what can be de-emphasized. Express that information graphically by grouping it.
+# Bad Design vs. Good Design:
 
-![proximity](https://i.imgur.com/nuqubJn.png)
+### :movie_camera: [Norman Doors: Don’t Know Whether to Push or Pull? Blame Design - 5:31](https://youtu.be/yY96hTb8WgI)
 
-![proximity2](https://i.imgur.com/ItQ6ujU.png)
+**Discuss - How does this apply to web development?**
 
-## Exercise
+<hr>
 
-You've been given starter code for a pretty awful looking website (`unit_2/w05d01/morning_exercise/starter_code/`).  Fix it up and make it C.R.A.P.!  
+### Information Overload
+Imagine you are a driver along this road on a Tuesday morning at 9 a.m. Can you park at this spot?
 
-_Don't modify any actual content of the html_, except to change the `src` of the `<img>` tag.  Feel free to add `<span>` tags, or classes and id's to call upon the content.  
+![information overload](https://i.imgur.com/MKhTcpy.png)<br>
+What sounds like a simple question takes a lot of mental processing to answer.
 
-Completely stuck for ideas?  Pick your favorite hobby or season to theme your page.  
+![parking sign](https://i.imgur.com/pNa0V6O.png)<br>
+You simply want to know whether they can park at a spot, yes or no, and that’s all the parking sign shows.
 
-## Resources
+This design also makes use of visuals, rather than text, to convey information. The result is incredibly intuitive: green for OK, red for No Parking. It’s even designed for the color blind, with stripes for No Parking.
 
-#### Colors
-- [clrs.css](http://clrs.cc/)
-- [Coolors.co](https://coolors.co/)
-- [Trendy Web Color Palettes](https://www.awwwards.com/trendy-web-color-palettes-and-material-design-color-schemes-tools.html)
+Now when you look at the sign, you’ll know that on Tuesday at 9 a.m., parking is not allowed.
 
+### Mystery Meat Navigation
 
-#### Fonts and Icons
-- [Google Fonts](https://fonts.google.com/)
-- [Font Awesome](http://fontawesome.io/)
-- [20 Best Web Fonts](https://www.awwwards.com/20-best-web-fonts-from-google-web-fonts-and-font-face.html)
+Mystery Meat Navigation refers to cases where the destination of a link is not visible until the user clicks on it or points the cursor at it. The term “mystery meat” is a reference school cafeteria meals that are so processed that their exact type is no longer discernible.
 
-#### Images
-- [Pixabay](https://pixabay.com/)
-- [Unsplash](https://unsplash.com/)
-- [Pexels](https://www.pexels.com/royalty-free-images/)
+Below is a screen shot of a real estate website, which is just a grid of thumbnails.  
 
-#### CSS
-- [Psuedo-classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes)
+![real estate](https://i.imgur.com/UugV7LZ.png)
 
-#### Chrome Extensions
-- [Eye Dropper](https://chrome.google.com/webstore/detail/eye-dropper/hmdcmlfkchdmnmnmheododdhjedfccka?hl=en)
-- [Palette Creator](https://chrome.google.com/webstore/detail/palette-creator/oolpphfmdmjbojolagcbgdemojhcnlod?hl=en)
-- [High Contrast](https://chrome.google.com/webstore/detail/high-contrast/djcfdncoelnlbldjfhinnjlhdjlikmph?hl=en)
+Are they clickable? If you move your mouse cursor over an image, it changes to a pointer, but what happens when you click on an image?
 
-### And remember...
+“Click and find out!” is never a good UX solution.
 
-![fonts matter](https://i.imgur.com/oprAaYd.png)
+![where to click](https://i.imgur.com/Bs2kWTi.png)
+
+These cards not only have “View Course” at the bottom of each to indicate the action that will happen, but also have a hover state with the text “Go to course”.
+
+Always label your links! You wouldn’t like to eat mystery meat—and similarly, your users wouldn’t like to click on mystery links.
+
+### Deceptive Imagery
+
+Are you ready for a tropical vacation ... I mean, a haircut?
+
+![tropical haircut](https://i.imgur.com/vB66SSb.png)
+
+# Let's Talk About Google
+
+![Google](https://i.imgur.com/4fkhtT7.png)
+
+### How is Google's Home Screen:
+
+ - Goal Focused
+ - Invisible
+ - Forgiving
+ - Consistent
+ - Smooth Onboarding
+
+### Even the secondary functionality of the site is intuitive.
+
+![Google Secondary](https://i.imgur.com/4W5FoAX.png)<br>
+![Google Secondary 2](https://i.imgur.com/GtgSvIA.png)
+
+# Activity (5 Minutes)
+
+### What's a site that you use _all the time_ that has good UX?  
+
+### How is that site:
+
+ - Goal Focused
+ - Invisible
+ - Forgiving
+ - Consistent
+ - Smooth Onboarding
+
+# But I'm not a designer!  
+
+1. Share your projects with your friends, family, and fellow classmates!  The best way to find fault in a project is for someone else to try and use it.  Try to give them as little outside instruction as possible.
+2. User stories!  Write user stories from the perspective of the user: "As a user I want to be able to click on x and have y happen" or “As a ____, I need a ____ in order to ____”.
+
+:pencil2: [Writing Good User Stories](https://www.mountaingoatsoftware.com/agile/user-stories)
+
+# Exercise
+
+We're going to create the game tic-tac-toe ... but before we begin, what are some user stories that we'll want to make sure we cover?
+
+:elephant: Reminder - Write from the perspective of the user: "As a user I want to be able to click on x and have y happen" or “As a ____, I need a ____ in order to ____”.
+
+Share your user stories in the partytime channel as you write them!  
+
+# Resources & More
+
+:book: [How Users Read on the Web](https://www.nngroup.com/articles/how-users-read-on-the-web/)
+
+:book: [The Design of Everyday Things](http://a.co/7wYcUD5)
+
+:movie_camera: [CSS Design Tips](https://www.youtube.com/watch?v=M1syJPviLkU&list=PLdnONIhPScST0Vy4LrIZiYKpFNoxgyH7J&index=13)

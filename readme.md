@@ -16,3 +16,9 @@
 - [Understanding the Role of Backend Development (8 Minutes)](https://youtu.be/JKsXAJs8UsE)
 - [The Basics of Node (30 minutes)](https://www.youtube.com/watch?v=8VQABh3PUOo)
 - [Express and Liquid Playlist](https://youtube.com/playlist?list=PLY6oTPmKnKbZQSCfJLwPcbsH_koOC_F-t)
+
+## In the bonus folder
+
+- lesson on MongoDB CLI (must install mongo on your computer to follow bonus lesson)
+- bonus build (another express/liquid/mongo build)
+- several bonus exercises covering bootstrap, Regex and more
