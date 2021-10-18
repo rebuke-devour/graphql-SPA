@@ -176,19 +176,19 @@ Back in your main app:
 <hr>
 
 ### Super Bonus
-Continue to work on X-Files in the labs folder
+Learn advanced routing techniques with [This Video](https://youtu.be/yGEcL09S5cg)
 
-### Request
+### Axios
 
 Looking for something advanced that we haven't covered? How about getting your server to communicate with another server on the web. You will have to look through documentation to get this working.
 
-There are more modules than just `express`. Let's look at one called `request` that can make http requests of its own.
+There are more modules than just `express`. Let's look at one called `axios` that can make http requests of its own.
 
 #### request
 
-Use a module called `request` to make an http request to a third-party API.
+Use a module called `axios` to make an http request to a third-party API.
 
-* Look on the [npmjs](https://www.npmjs.com/) website to find documentation for a module called `request`
+* Look on the [npmjs](https://www.npmjs.com/) website to find documentation for a module called `axios`
 
 * Go to the [jservice.io](http://jservice.io/) website to find documentation on the jservice api endpoints. This API will send JSON as a response. If you go to `http://jservice.io/api/random` in your browser, you'll see some JSON.
 
@@ -196,7 +196,7 @@ Something like this:
 
 ![](https://i.imgur.com/n82vCvO.png)
 
-* Use `request` within node to make a request to `jservice.io` and get a random trivia question and log the JSON in terminal.
+* Use `axios` within node to make a request to `jservice.io` and get a random trivia question and log the JSON in terminal.
 
 * Use `express` to make a route that will display a random trivia question and its answer (only the question and the answer) in the browser. _Hint_ is the JSON really a Javascript object? Or is it a string?
 
