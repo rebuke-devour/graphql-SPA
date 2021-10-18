@@ -124,7 +124,5 @@ NOTE: We are allowed have many res.sends within a single route _if_ they send in
 
 ## Bonus
 
-- Figure out how a user/client could change the query parameters without typing in the URL bar. Hint (you'll need to do a bit of research!)
+[Start Reading about Template Engines](https://expressjs.com/en/guide/using-template-engines.html)
 
-- Finish the morning lab
-- Work on the Super Bonus
