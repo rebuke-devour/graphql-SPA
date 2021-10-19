@@ -88,7 +88,7 @@ Let's do another rep with setting up an express server!
 
 ## Hungry for More?
 
-Go back to the X-Files lab from the previous day and/or check out the new Super Bonus!
+Refactor this exercise using LiquidJS Templates
 
 ---
 
