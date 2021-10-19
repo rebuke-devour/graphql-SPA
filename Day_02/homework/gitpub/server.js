@@ -4,6 +4,12 @@ const express = require('express')
 // create our application object (and configure liquid templating)
 const app = require('liquid-express-views')(express())
 
+app.get('/',  (req, res)=> {
+    res.send('Welcome to the GitPub App')
+  })
+
+
+
 
 
 
