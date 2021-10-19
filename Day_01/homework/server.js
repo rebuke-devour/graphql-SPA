@@ -49,6 +49,7 @@ app.get('/magic/:question', (req,res)=> {
 
 
 
+
 //Setup Server Listener//
 app.listen(3000, ()=> {
     console.log('Your server is now listening on port 3000')

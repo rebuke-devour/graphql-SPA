@@ -7,7 +7,7 @@ app.get('/:bottlesNum',('req,res')=> {
 })
 
 app.get("/", (req, res) => {
-    res.send(`99 bottles of acid on the wall <a href="/98">take one down, pass it around</a>`)
+    res.send(`99 bottles of beer on the wall <a href="/98">take one down, pass it around</a>`)
 })
 
 app.listen(3000, ()=> {
