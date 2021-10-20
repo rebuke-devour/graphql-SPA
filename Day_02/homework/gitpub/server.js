@@ -8,6 +8,11 @@ app.get('/',  (req, res)=> {
     res.send('Welcome to the GitPub App')
   })
 
+  const drinks = require('./models/drinks.js')
+
+  app.get('/drinks',(req,res) => {
+      res.send(drinks)
+  })
 
 
 
