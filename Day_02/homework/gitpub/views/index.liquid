@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+         <link rel='stylesheet' src = './styles.css'>
+
+        <title>The GitPub App</title>
+    </head>
+    <h1> Welcome to Gitpub </h1>
+    <style type='text/css'>
+    body {
+        color: blanchedalmond;
+        background-color: steelblue;
+    }
+    </style>
+    <body>
+        <ul>
+        
+        {%  for drink in drinks  %}
+            <li> 
+
+            <a href='/drinks/{{forloop.index0}}'>{{drink.name}}</a>
+
+            </li> 
+
+        {% endfor %}
+
+        </ul>
+    </body>
+</html> 

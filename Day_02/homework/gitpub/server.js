@@ -11,7 +11,13 @@ app.get('/',  (req, res)=> {
   const drinks = require('./models/drinks.js')
 
   app.get('/drinks',(req,res) => {
-      res.send(drinks)
+    
+      res.render('index.liquid',{drinks: drinks})
+  })
+  
+  app.get('/drinks/:index',(req,res) => {
+    const id = parseInt(req.params.index)
+      res.render('show.liquid',{drinks: drinks[id]})
   })
 
 
