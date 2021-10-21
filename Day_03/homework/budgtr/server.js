@@ -2,6 +2,19 @@ const express = require('express');
 const app = require("liquid-express-views")(express());
 const budgets = require('./models/budget.js')
 
+
+app.use(express.static('public'))
+
+app.use(express.urlencoded({extended:true}))
+
+
+
+
+
+
+
+
+
 /////////////////////////////
 // CREATE           ///////
 //////////////////////////
@@ -24,7 +37,7 @@ app.get('/budget',(req,res)=>{
 //       NEW          //
 ///////////////////////
 app.get('/budget/new', (req,res)=> {
-    res.render('new/liquid')
+    res.render('new.liquid')
 })
 
 

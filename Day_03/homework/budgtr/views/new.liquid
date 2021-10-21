@@ -1,13 +1,20 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        {% comment %} <link rel="stylesheet" href="/normalize.css">
-        <link rel="stylesheet" href="/skeleton.css">
-        <title> Budgtr App</title> {% endcomment %}
-    </head>
-    <body>
-{% layout 'new.liquid' %}
 
-{% block content %}
+
+    <head>
+        <link rel="stylesheet" href="/normalize.css"/>
+        <link rel="stylesheet" href="/skeleton.css"/> 
+        </head>
+    <body>
+    <h1>Add Item</h1>
+
+<div class='container'>
+    <form action='/budget'method='post'>
+        Name: <input type='text' name='name'><br>
+        Date: <input type='text' name='Date'><br>
+        From: <input type='text' name='From'><br>
+        Amount: <input type='text' name='Amount'><br>
+    <input type='submit' value='create'>
+
+    </form>
+</div>
 </body>
