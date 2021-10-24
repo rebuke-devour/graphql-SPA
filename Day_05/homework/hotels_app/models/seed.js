@@ -1,4 +1,7 @@
-module.exports = [
+ 
+ 
+ const Hotel= [
+
   {
     "name": "Hotel California",
     "location": "California",
@@ -490,3 +493,9 @@ module.exports = [
     ]
   }
 ]
+
+
+// const Hotel = model('Hotel',hotelSchema )
+
+
+module.exports = Hotel
