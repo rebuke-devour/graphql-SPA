@@ -3,19 +3,8 @@ const app = require("liquid-express-views")(express());
 const Pokemon = require('../models/pokemon.js');
 
 /////////////////////////////////////
-//        M I D D L E W A R E   ///
+//      M I D D L E W A R E      ///
 ///////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
 
 
 
