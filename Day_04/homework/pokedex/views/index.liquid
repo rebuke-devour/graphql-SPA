@@ -1,0 +1,21 @@
+{% layout "layout.liquid" %}
+
+
+    {%block content %}
+    <body>
+        <h1> Pokedex </h1>
+        <ul>
+           
+            <a href=/pokemon/new>A New Pokemon</a>
+
+            {%  for poke in pokemon  %}
+              
+            <a href='/pokemon/{{forloop.index0}}'>{{poke.name}}<img src={{poke.img}}></a>
+
+            {% endfor %}
+
+        </ul>
+     </body> 
+
+{% endblock %} 
+
