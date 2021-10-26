@@ -6,9 +6,6 @@ const app = require("liquid-express-views")(express(), {root: [path.resolve(__di
 const pokemon = require('./models/pokemon.js');
 
 
-
-
-
 /////////////////////////////////////
 //      M I D D L E W A R E      ///
 // ///////////////////////////////////
@@ -20,8 +17,8 @@ app.use(express.static('public'))
 //////////////////////////////////////
 //////////////////////////////////////
 
-//============= INDEX
-app.get("/", (req, res) => {
+// ============= INDEX
+app.get("/", (_req, res) => {
     res.render("index.liquid", {pokemon: pokemon})
 })
 
@@ -30,13 +27,13 @@ app.get('/pokemon/', (req, res) => {
     res.render('../views/index.liquid', { poke: pokemon[id] });
 });
 
-//==============SHOW
+// ==============SHOW
 app.get('/pokemon/:id', (req, res) => {
     const id = parseInt(req.params.id)
     res.render('show.liquid', { poke: pokemon[id] });
 });
 
-// New
+// ===============New
 
 app.get('/pokemon/new', (req,res)=>{
     const id = parseInt(req.params.id)

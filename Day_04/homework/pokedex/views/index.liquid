@@ -6,14 +6,15 @@
         <h1> Pokedex </h1>
         <ul>
            
-            <a href=/pokemon/new>A New Pokemon</a>
-
+            <a href=/pokemon/new></a>
+            <ul>
+            <li>
             {%  for poke in pokemon  %}
               
             <a href='/pokemon/{{forloop.index0}}'>{{poke.name}}<img src={{poke.img}}></a>
-
+            </li>
             {% endfor %}
-
+            </ul>
         </ul>
      </body> 
 
