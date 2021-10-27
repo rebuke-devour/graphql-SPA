@@ -3,15 +3,15 @@
 ///////////////////////////////////
 // import the existing connected mongoose object from connection.js
 const mongoose = require("./connection")
-const Product = require('./models/products');
+const Products = require('../models/products');
 
 
-////////////
+/////////////////////////////
 
 
 ///////////////////////////////
-// Create our Fruits Model
-///////////////////////////////////////////
+// Create our Product Model //
+/////////////////////////////
 // destructuring Schema and model from mongoose
 const {Schema, model} = mongoose 
 
@@ -22,7 +22,8 @@ const {Schema, model} = mongoose
     img: String,
     price: Number,
     qty: Number,
+    inStock: true
  })
 
- // Make the Fruit Model
-const Products = model("Products", productSchema)
+ // Make the Model
+// const Products = model("Products", productSchema)

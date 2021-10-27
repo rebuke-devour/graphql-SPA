@@ -2,24 +2,23 @@
 {% block content %}
 
 <div>
- <a href="/fruits/new"><button>New Item</button></a
-            {% for fruit in fruits %}
+ <a href="/products/new"><button>New Item</button></a
+            {% for product in products %}
                  <article>
         
-            <a href="/fruits/{{ fruit._id }}">
+            <a href="/products/{{ product._id }}">
             <h2>
             {{Product.name}} - 
-                {% if fruit.readyToEat == true %}
-                     Ripe
+                {% if product.inStock == true %}
+                     Buy this!
                 {% else %}
-                    Not Ripe
+                    Let me know when you have it
                 {% endif %}
 
             </h2>
         </a>
                 </article>
 {% endfor %}
-
 
 </div>
 

@@ -1,0 +1,21 @@
+{% layout "layout.liquid" %} {% block content %}
+      <div>
+        <article>
+          <h2>
+            {{ product.name }} -
+            
+            {% if inStock == true %}
+            Buy this!
+            {% else %}
+            Let me know when you have it!
+            {% endif %}
+          </h2>
+          <h3>{{ product.description }}</h3>
+          <a href="/products/{{ product._id }}/edit"><button>Edit</button></a>
+          <form action="/products/{{ product._id }}?_method=DELETE" method="POST">
+            <input type="submit" value="Delete" />
+          </form>
+          <a href="/products/"><button>Back to Main</button></a>
+        </article>
+      </div>
+{% endblock %}
