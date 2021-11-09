@@ -33,28 +33,28 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 
 
 // SEED =========================================
-//db.on('open',
-// Hotel.create(hotelSeed, ( err , data ) => {
-//   if ( err ) console.log ( err.message )
+
+Hotel.create(hotelSeed, ( err , data ) => {
+  if ( err ) console.log ( err.message )
   
-//   })
-//)
+  })
 
 
-// Hotel.create(hotelSeed, ( err , data ) => {
-//     if ( err ) console.log ( err.message )
-//       console.log( data )
-//     }
-// );
+
+Hotel.create(hotelSeed, ( err , data ) => {
+    if ( err ) console.log ( err.message )
+      console.log( data )
+    }
+);
 
 // if seeded too many times
 // Hotel.collection.drop();
 
 // check hotel count
-// Hotel.count({} , (err , data)=> {
-//    if ( err ) console.log( err.message );
-//     console.log ( `There are ${data} hotels in this database` );
-// });
+Hotel.count({} , (err , data)=> {
+   if ( err ) console.log( err.message );
+    console.log ( `There are ${data} hotels in this database` );
+});
 
 // ========== END OF PROVIDED CODE ========= //
 
@@ -63,43 +63,115 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 // middleware to parsebody
 app.use(express.urlencoded({extended: true}))
 
-
 app.get('/', (req, res)=>{
   res.send('Im Awake')
 })
 
+
 // //=======================CREATE
-
-// app.post('/ ',(req,res)=>{
-
-// )}
+[
+  {
+    "name": "Hotel Virginia",
+    "location": "Massachusetts",
+    "rating": 4.3,
+    "vacancies": true,
+    "rooms": [
+      {
+        "roomNumber": 111,
+        "size": "Queen Double",
+        "price": 75,
+        "booked": true
+      },
+      {
+        "roomNumber": 210,
+        "size": "King Suite",
+        "price": 68,
+        "booked": false
+      },
+      {
+        "roomNumber": 375,
+        "size": "Queen Double",
+        "booked": true
+      },
+      {
+        "roomNumber": 700,
+        "size": "King Suite",
+        "price": 68,
+        "booked": true
+      },
+      {
+        "roomNumber": 777,
+        "size": "Penthouse",
+        "price": 777,
+        "booked": true
+      }
+    ],
+    "tags": [
+      "Whiskey",
+      "wine",
+      "lovely",
+      "Had the greatest time"
+    ]
+  }]
 
 // //==========================New
 
-// app.get('/ /new', (req,res)=>{
-
-// })
+Hotel.create(hotelSeed)
+.then((tweet) => {console.log(tweet)})
+.catch((error)=> {db.close()})
+.finally(()=>{db.close()})
 
 // //=======================EDIT
+Hotel.find({}, 'name')
+.then((tweet)=>{console.log(tweet)})
+.catch((tweets)=>{consloe.log(tweet)})
+.finally(()=> {db.close()})
 
-// app.get ('/ /:id/edit', (req,res)=>{
+// find all vacancies and exclude rating
+// Hotel.find({vacancies: "true"  }) //this one finds hotels with vacancies just fine
 
-// })
+// Hotel.find({"rating"}).select("-rating")
+Hotel.find({}).select('-rating')
+
+// the command is successful
+.then((tweets) => {console.log(tweets)})
+// if database transaction fails
+.catch((error) => {console.log(error)})
+// either way, run the following
+.finally(() => {db.close()})
+
+
+//Delete 
+
+Hotel.findOneAndRemove({_id: "6175ede2fa8b74792c1cf7e8"})  //you remove things by their id
+// the command is successful
+.then((tweet) => {console.log(tweet)})
+// if database transaction fails
+.catch((error) => {console.log(error)})
+// either way, run the following
+.finally(() => {db.close()})
 
 
 
-// //======================UPDATE
+Hotel.findOneAndRemove({_id: "6175ede2fa8b74792c1cf7df"})  //you remove things by their id
+// the command is successful
+.then((tweet) => {console.log(tweet)})
+// if database transaction fails
+.catch((error) => {console.log(error)})
 
-// app.put('/ /:id', (req,res)=>{
 
-// })
+Hotel.findOneAndRemove({_id: "6175ede2fa8b74792c1cf7f4"})  //you remove things by their id
+// the command is successful
+.then((tweet) => {console.log(tweet)})
+// if database transaction fails
+.catch((error) => {console.log(error)})
+// either way, run the following
+.finally(() => {db.close()})
 
-// //====================DESTROY
 
-// app.delete('/ /:id', (req,res)=>{
 
-// )}
 
+   
 
 //================LISTENER
 const PORT = 3000
